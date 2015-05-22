@@ -2,23 +2,16 @@
 
 \chapter{Introduction} % Main chapter title
 
-\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+\label{Intro} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
 \lhead{\emph{Introduction}} % This is for the header on each page - perhaps a shortened title
 
-%----------------------------------------------------------------------------------------
+\section{Similarity of data}
 
-\section{Blabla}
+How do we know that Dutch is more similar to German than it is to French? How do we know that Bob Dylan's music is closer to The Beatles' than it is to Bach's?
 
-%----------------------------------------------------------------------------------------
+Does a computer know? 
 
-\section{Learning \LaTeX{}}
+This thesis concerns a method expressing similarity of data that is feature free: it does not use domain knowledge about the data (for example, word origins or grammar rules in the case of languages.) The method is based on file compression and is rooted in Kolmogorov complexity.
 
-
-
-\subsection{A (not so short) Introduction to \LaTeX{}}
-
-Subsection
-
-\subsection{A Short Math Guide for \LaTeX{}}
-
+The idea is easy to grasp. If a compressor compresses the concatenation of two files better than it compresses the files separately, it must have found some regularities that appear in both files. This compression gain is used to define a similarity metric that aims to capture the similarity of every dominant feature of the data.

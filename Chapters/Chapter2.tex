@@ -1,37 +1,66 @@
 % Chapter Template
 
-\chapter{Foundation in Kolmogorov complexity} % Main chapter title
+\chapter{Normalized compression distance} % Main chapter title
 
 \label{Chapter2} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 2. \emph{Foundation in Kolmogorov complexity}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Chapter 2. \emph{Normalized compression distance}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
+\section{Foundations in Kolmogorov complexity}
 
-\section{Main Section 1}
+In this chapter we will make explicit the idea of similarity based on file compression. But first, we explain the notion of Kolmogorov complexity. For a complete reference, see \cite{li2009introduction}.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ultricies lacinia euismod. Nam tempus risus in dolor rhoncus in interdum enim tincidunt. Donec vel nunc neque. In condimentum ullamcorper quam non consequat. Fusce sagittis tempor feugiat. Fusce magna erat, molestie eu convallis ut, tempus sed arcu. Quisque molestie, ante a tincidunt ullamcorper, sapien enim dignissim lacus, in semper nibh erat lobortis purus. Integer dapibus ligula ac risus convallis pellentesque.
+The Kolmogorov complexity of a string $x$, written $K(x)$, is the length of the shortest program that outputs $x$. 
 
-%-----------------------------------
-%	SUBSECTION 1
-%-----------------------------------
-\subsection{Subsection 1}
+Intuitively, $111\dots111$, a string of a million ones, is not very complex. It does not contain much information. Indeed, the Kolmogorov complexity of this string is low. A 27-byte Ruby program produces it:
 
-Nunc posuere quam at lectus tristique eu ultrices augue venenatis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam erat volutpat. Vivamus sodales tortor eget quam adipiscing in vulputate ante ullamcorper. Sed eros ante, lacinia et sollicitudin et, aliquam sit amet augue. In hac habitasse platea dictumst.
+\begin{verbatim}
+1000000.times { print "1" }
+\end{verbatim}
 
-%-----------------------------------
-%	SUBSECTION 2
-%-----------------------------------
+I do not claim the Kolmogorov complexity of a string of a million ones is 27 bytes. The true Kolmogorov complexity of a string $x$ cannot be computed in the Turing sense. There is no program that, given $x$, outputs the (length of) the shortest program that produces $x$.
 
-\subsection{Subsection 2}
-Morbi rutrum odio eget arcu adipiscing sodales. Aenean et purus a est pulvinar pellentesque. Cras in elit neque, quis varius elit. Phasellus fringilla, nibh eu tempus venenatis, dolor elit posuere quam, quis adipiscing urna leo nec orci. Sed nec nulla auctor odio aliquet consequat. Ut nec nulla in ante ullamcorper aliquam at sed dolor. Phasellus fermentum magna in augue gravida cursus. Cras sed pretium lorem. Pellentesque eget ornare odio. Proin accumsan, massa viverra cursus pharetra, ipsum nisi lobortis velit, a malesuada dolor lorem eu neque.
+The string $011\dots010$, produced by flipping a fair coin a million times, has, with very high probability, a Kolmogorov complexity close to its own length (by counting the number of different bit strings of each length, you can show that the chance to compress a random string by more than $c$ bits is at most $2^{-c}$).
 
-%----------------------------------------------------------------------------------------
-%	SECTION 2
-%----------------------------------------------------------------------------------------
+So, printing the literal description may be the best we can do:
 
-\section{Main Section 2}
+\begin{verbatim}
+print "011...010"
+\end{verbatim}
 
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus vehicula hendrerit.
+The Kolmogorov complexity of a string $x$, given a string $y$, denoted by $K(x|y)$, is the length of the shortest program that outputs $x$, given $y$ as input.
+
+\subsection{Information distance}
+
+The Kolmogorov complexity is a measure of information content in an individual object. In the same way, in \cite{Bennett1998} the information distance $E(x, y)$ between two strings $x$ and $y$ is defined as the length of the shortest program that converts $x$ to $y$ and $y$ to $x$. It is shown that
+
+$$ E(x, y) = \max \{ K(x|y), K(y|x) \} $$
+
+$E(x, y)$ is an absolute distance. But similarity is better expressed relatively. To illustrate: if two binary strings of length 100 have a Hamming distance of 50 (i.e. they have different bits in 50 positions), they are not very alike. If, on the other hand, two strings of length $10^{6}$ have a Hamming distance of 50, they are very much alike.
+
+In \cite{Li2004}, the normalized information distance is defined as
+
+\begin{equation}\label{nid}
+  \text{NID}(x, y) = \frac{\max \{ K(x|y), K(y|x) \}}{\max \{ K(x), K(y)\}}
+\end{equation}
+
+and it is shown that $ \text{NID}(x, y)$ minorizes every distance $d(x, y)$ up to a negligible additive term, where $d(x, y)$ belongs to a wide class of normalized distances that includes everything remotely interesting.
+
+This means that if two strings are similar according to some distance (be it Hamming distance, overlap distance, or any other), they are also similar according to the normalized information distance. This is why $	\text{NID}(x, y)$ is also called \emph{the} similarity distance.
+
+\section{Approximating Kolmogorov complexity with a real world compressor}
+
+The remarkable properties of the normalized information distance come at the price of incomputability. But, the Kolmogorov complexity can be approximated by real world (lossless) compression programs like zlib or liblzma. The normalized compression distance \cite{Cilibrasi2005} is defined as
+
+\begin{equation}\label{ncd}
+  \text{NCD} = \frac{C(xy) - \min \{ C(x), C(y) \}}{\max \{ C(x), C(y) \}}
+\end{equation}
+
+where $xy$ is the concatenation of $x$ and $y$, and $C(x)$ is the length of $x$, after being compressed by compressor $C$.
+
+The $\text{NCD}$ is central to this work. It is the real world approximation of the normalized information distance \eqref{nid}.
+
+\subsection{A real world compressor does not exploit all regularity}
+Since $K$ is incomputable, we have no idea how far off the length given by $C$ is. Consider $31415...$, the string consisting of the first $10^{9}$ digits of $\pi$. The Kolmogorov complexity of this string is low: a simple program, perhaps exploiting a converging series formula, will produce it. Any real world compressor $C$, however, fails to compress this string by even a few bits\footnote{A textual representation "31415..." can actually be compressed significantly by almost every compressor, but this is an encoding issue. The file consists only of the bytes 0 through 9, which can be more efficiently encoded using, for example, a system where each decimal number is assigned a four bit code (which is still naive.) For clarity, I do not concern myself with encoding in this chapter. Every finite alphabet can be recoded in binary, so it is customary to only think about binary strings in the literature. Conceptually, nothing changes. }.
+
+In the following chapters (and extensively in \cite{Cilibrasi2005}) it is demonstrated that the $\text{NCD}$ is adequate for many applications.

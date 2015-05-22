@@ -1,0 +1,62 @@
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Li and Vit\'{a}nyi(2009)]{li2009introduction}
+Ming Li and Paul M~B Vit\'{a}nyi.
+\newblock \emph{{An introduction to Kolmogorov complexity and its
+  applications}}.
+\newblock Springer Science \& Business Media, 2009.
+
+\bibitem[Bennett et~al.(1998)Bennett, G\^{a}cs, Li, Vit\^{a}nyi, and
+  Zurek]{Bennett1998}
+Charles~H. Bennett, P\'{e}ter G\^{a}cs, Ming Li, Paul M~B Vit\^{a}nyi, and
+  Wojciech~H. Zurek.
+\newblock {Information distance}.
+\newblock \emph{IEEE Transactions on Information Theory}, 44\penalty0
+  (4):\penalty0 1407--1423, 1998.
+\newblock ISSN 00189448.
+\newblock \doi{10.1109/18.681318}.
+
+\bibitem[Li et~al.(2004)Li, Chen, Li, Ma, and Vitanyi]{Li2004}
+M.~Li, X.~Chen, X.~Li, B.~Ma, and P.M.B. Vitanyi.
+\newblock {The Similarity Metric}.
+\newblock \emph{IEEE Transactions on Information Theory}, 50\penalty0
+  (12):\penalty0 3250--3264, 2004.
+\newblock ISSN 0018-9448.
+\newblock \doi{10.1109/TIT.2004.838101}.
+
+\bibitem[Cilibrasi and Vit\'{a}nyi(2005)]{Cilibrasi2005}
+Rudi Cilibrasi and P.~M~B Vit\'{a}nyi.
+\newblock {Clustering by compression}.
+\newblock \emph{IEEE Transactions on Information Theory}, 51\penalty0
+  (4):\penalty0 1523--1545, 2005.
+\newblock ISSN 00189448.
+\newblock \doi{10.1109/TIT.2005.844059}.
+
+\bibitem[Gen()]{GenBank}
+0aa01af9101ad7f92eedf17301e3269ae811fb50 @ www.ncbi.nlm.nih.gov.
+\newblock URL \url{http://www.ncbi.nlm.nih.gov/genbank/}.
+
+\bibitem[Cao et~al.(1998)Cao, Janke, Waddell, Westerman, Takenaka, Murata,
+  Okada, P\"{a}\"{a}bo, and Hasegawa]{Cao1998}
+Ying Cao, Axel Janke, Peter~J. Waddell, Michael Westerman, Osamu Takenaka,
+  Shigenori Murata, Norihiro Okada, Svante P\"{a}\"{a}bo, and Masami Hasegawa.
+\newblock {Conflict among individual mitochondrial proteins in resolving the
+  phylogeny of eutherian orders}.
+\newblock \emph{Journal of Molecular Evolution}, 47\penalty0 (3):\penalty0
+  307--322, 1998.
+\newblock ISSN 00222844.
+\newblock \doi{10.1007/PL00006389}.
+
+\bibitem[Cilibrasi and Vitnyi(2011)]{Cilibrasi2011}
+Rudi~L. Cilibrasi and P.~M~B Vitnyi.
+\newblock {A Fast Quartet tree heuristic for hierarchical clustering}.
+\newblock \emph{Pattern Recognition}, 44\penalty0 (3):\penalty0 662--677, 2011.
+\newblock ISSN 00313203.
+\newblock \doi{10.1016/j.patcog.2010.08.033}.
+
+\end{thebibliography}
