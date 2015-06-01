@@ -3,47 +3,49 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: unsrtnat.bst
 Database file #1: library.bib
-Warning--I didn't find a database entry for "Cilibrase2011"
 Warning--empty year in GenBank
-You've used 7 entries,
+Warning--empty year in ruby
+Warning--empty year in clojure
+Warning--empty year in ghc
+You've used 10 entries,
             2481 wiz_defined-function locations,
-            612 strings with 5810 characters,
-and the built_in function-call counts, 3016 in all, are:
-= -- 260
+            619 strings with 5955 characters,
+and the built_in function-call counts, 3658 in all, are:
+= -- 317
 > -- 168
 < -- 3
-+ -- 64
++ -- 70
 - -- 50
-* -- 265
-:= -- 488
-add.period$ -- 30
-call.type$ -- 7
-change.case$ -- 13
-chr.to.int$ -- 7
-cite$ -- 9
-duplicate$ -- 128
-empty$ -- 259
+* -- 301
+:= -- 548
+add.period$ -- 36
+call.type$ -- 10
+change.case$ -- 19
+chr.to.int$ -- 10
+cite$ -- 18
+duplicate$ -- 170
+empty$ -- 355
 format.name$ -- 62
-if$ -- 626
+if$ -- 782
 int.to.chr$ -- 1
-int.to.str$ -- 8
+int.to.str$ -- 11
 missing$ -- 7
-newline$ -- 52
+newline$ -- 64
 num.names$ -- 18
-pop$ -- 50
+pop$ -- 89
 preamble$ -- 1
-purify$ -- 7
+purify$ -- 10
 quote$ -- 0
-skip$ -- 79
+skip$ -- 118
 stack$ -- 0
-substring$ -- 158
-swap$ -- 14
+substring$ -- 167
+swap$ -- 20
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 46
-warning$ -- 1
+type$ -- 67
+warning$ -- 4
 while$ -- 22
 width$ -- 0
-write$ -- 113
-(There were 2 warnings)
+write$ -- 140
+(There were 4 warnings)

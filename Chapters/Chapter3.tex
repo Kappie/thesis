@@ -128,3 +128,54 @@ Figure \ref{figure:dendrogram_mammals} shows the phylogeny tree obtained by aver
   \caption{Result of average linkage clustering of the distance matrix shown in table \ref{table:distance_matrix}. The height at which clusters join is proportional to the distance between them. }
   \label{figure:dendrogram_mammals}
 \end{figure}
+
+Comparison with \cite{Cao1998} shows that the dendrogram in this paper is a little bit off. Here, $((\text{finWhale}, \text{blueWhale}), \text{cow})$ joins $(\text{whiteRhinoceros}, \text{horse})$ first, while in the cited paper $((\text{harborSeal}, \text{greySeal}), \text{cat})$ first joins $(\text{horse}, \text{rhinoceros})$. Also, higher up in the tree, in this paper, the rodents join the ferungulates, and then the primates join, while in the cited paper the primates and ferungulates join first, and then the rodents join.
+
+\cite{Cilibrasi2005}, which also uses NCD, but clusters with an algorithm described in \cite{Cilibrasi2011}, does not make these mistakes. But, the algorithm they use works especially well for evolutionary data, and they attain a global fitness score of $S(T) = 0.996$ for their tree $T$, which is exceptionally high. Other trees, containing, for example, random correlated data, have $S(T) = 0.905$ for the best found tree.
+
+\section{Random correlated data}
+
+In this section, we will cluster files containing random bytes, which we have partially correlated, so we know what the clustering should be like. This method of validation was taken from \cite{Cilibrasi2005}. All byte sequences have been generated with the random\_bytes function of the Ruby library SecureRandom.
+
+Let \emph{tags} $a$, $b$, $c$ be blocks of 1000 random bytes. We create file $a$ in the following way: generate 80.000 random bytes, and at 10 distinct positions (picked from $0 \dots 79$) replace a 1000 byte block with tag $a$. To create file $ab$, we insert tag $a$ at 10 distinct positions, then insert tag $b$ at 10 distinct positions, possibly overwriting some of the earlier insertions of tag $a$. In this way, we create files $a$, $b$, $c$, $ab$, $ac$, $bc$, and $abc$. The clustering is shown in \ref{figure:7_artificial_files}.
+
+I opted for single linkage clustering, i.e. the distance between clusters $A$ and $B$ is $d(A, B) = \min_{a \in A, b \in B} \text{d}(a, b)$, because it shows the fact that $ab$, $ac$ and $bc$ have about the same distance to $abc$, while $a$, $b$ and $c$ are farther away, but also at an even distance, exactly as you would expect.
+
+\begin{figure}[h!]
+  \includegraphics[scale=0.7]{7-artificial-files-single.pdf}
+  \caption{Single link clustering of seven 80 kB files containing random bytes, which are partially correlated. The height at which clusters join is the distance between them, according to the linkage criterion.}
+  \label{figure:7_artificial_files}
+\end{figure}
+
+In figure \ref{figure:22_artificial_files}, the experiment is repeated with 22 files, mimicking the experiment done in \cite{Cilibrasi2005}. The result is what you would expect, and you could argue that this clustering is more insightful than the quartet tree method, since it shows the degree in which two clusters are related. $abcd$ is closer to $abce$ than $jk$ is to any file labeled by more than two tags, for example.
+
+\begin{figure}[h!]
+  \includegraphics[scale=0.7]{22-artificial-files-single.pdf}
+  \caption{Single link clustering of twenty-two 80 kB files containing random bytes, which are partially correlated.}
+  \label{figure:22_artificial_files}
+\end{figure}
+
+\section{Literature}
+
+We proceed to clustering of utf-8 files of books obtained from \url{www.gutenberg.org}. Here, the result is hard to validate, except for human intuition. The books used in this experiment are (1) A Week on the Concord and Merrimack Rivers, (2) Walden, and On The Duty of Civil Disobedience, both by Thoreau, (3) The Adventures of Sherlock Holmes, (4) The Hound of the Baskervilles, both by Doyle, (5) The Beautiful and the Damned, (6) This Side of Paradise, both by Fitzgerald, (7) Sons and Lovers, (8) White Peacock, both by Lawrence. The result is shown in figure \ref{figure:8_books}.
+
+\begin{figure}[h!]
+  \includegraphics[scale=0.7]{literature-average.pdf}
+  \caption{Average link clustering of eight books by english and american writers in utf-8 format.}
+  \label{figure:8_books}
+\end{figure}
+
+
+\section{Source files}
+
+We cluster ten files from the Ruby standard library \cite{ruby} at commit \texttt{c722f8ad1d}, ten files from the Clojure standard library \cite{clojure} at commit \texttt{41af6b24dd} and ten files from the Glasgow Haskell Compiler 6.10.1 \cite{ghc}. All comments and blank lines were stripped. This removes, among other things, copyright notices which were shared by files belonging to the same library. The result is shown in figure \ref{figure:30_source_files}. No preprocessing gives similar results.
+
+\begin{figure}[h!]
+  \includegraphics[scale=0.7]{30-source-files-no-comments-average.pdf}
+  \caption{Average link clustering of 30 source files. The comments and blank lines were stripped using the \emph{cloc} utility.}
+  \label{figure:30_source_files}
+\end{figure}
+
+\section{Natural language}
+
+
