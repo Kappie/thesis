@@ -48,9 +48,9 @@ and it is shown that $ \text{NID}(x, y)$ minorizes every distance $d(x, y)$ up t
 
 This means that if two strings are similar according to some distance (be it Hamming distance, overlap distance, or any other), they are also similar according to the normalized information distance. This is why $	\text{NID}(x, y)$ is also called \emph{the} similarity distance.
 
-\section{Approximating Kolmogorov complexity with a real world compressor}
+\section{Approximating Kolmogorov complexity with a real-world compressor}
 
-The remarkable properties of the normalized information distance come at the price of incomputability. But, the Kolmogorov complexity can be approximated by real world (lossless) compression programs like zlib or liblzma. The normalized compression distance \cite{Cilibrasi2005} is defined as
+The remarkable properties of the normalized information distance come at the price of incomputability. But, the Kolmogorov complexity can be approximated by real-world (lossless) compression programs like zlib or liblzma. The normalized compression distance \cite{Cilibrasi2005} is defined as
 
 \begin{equation}\label{ncd}
   \text{NCD} = \frac{C(xy) - \min \{ C(x), C(y) \}}{\max \{ C(x), C(y) \}}
@@ -58,9 +58,9 @@ The remarkable properties of the normalized information distance come at the pri
 
 where $xy$ is the concatenation of $x$ and $y$, and $C(x)$ is the length of $x$, after being compressed by compressor $C$.
 
-The $\text{NCD}$ is central to this work. It is the real world approximation of the normalized information distance \eqref{nid}.
+The $\text{NCD}$ is central to this work. It is the real-world approximation of the normalized information distance \eqref{nid}.
 
-\subsection{A real world compressor does not exploit all regularity}
-Since $K$ is incomputable, we have no idea how far off the length given by $C$ is. Consider $31415...$, the string consisting of the first $10^{9}$ digits of $\pi$. The Kolmogorov complexity of this string is low: a simple program, perhaps exploiting a converging series formula, will produce it. Any real world compressor $C$, however, fails to compress this string by even a few bits\footnote{A textual representation "31415..." can actually be compressed significantly by almost every compressor, but this is an encoding issue. The file consists only of the bytes 0 through 9, which can be more efficiently encoded using, for example, a system where each decimal number is assigned a four bit code (which is still naive.) For clarity, I do not concern myself with encoding in this chapter. Every finite alphabet can be recoded in binary, so it is customary to only think about binary strings in the literature. Conceptually, nothing changes. }.
+\subsection{A compressor does not exploit all regularity}
+Since $K$ is incomputable, we have no idea how far off the length given by $C$ is. Consider $31415...$, the string consisting of the first $10^{9}$ digits of $\pi$. The Kolmogorov complexity of this string is low: a simple program, perhaps exploiting a converging series formula, will produce it. Any real-world compressor $C$, however, fails to compress this string by even a few bits\footnote{A textual representation "31415..." can actually be compressed significantly by almost every compressor, but this is an encoding issue. The file consists only of the bytes 0 through 9, which can be more efficiently encoded using, for example, a system where each decimal number is assigned a four bit code (which is still naive.) For clarity, I do not concern myself with encoding in this chapter. Every finite alphabet can be recoded in binary, so it is customary to only think about binary strings in the literature. Conceptually, nothing changes. }.
 
 In the following chapters (and extensively in \cite{Cilibrasi2005}) it is demonstrated that the $\text{NCD}$ is adequate for many applications.

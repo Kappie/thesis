@@ -7,45 +7,48 @@ Warning--empty year in GenBank
 Warning--empty year in ruby
 Warning--empty year in clojure
 Warning--empty year in ghc
-You've used 10 entries,
+Warning--empty journal in Roussev2013
+Warning--empty journal in Cilibrasi2007
+Warning--empty journal in Pedregosa2011
+You've used 22 entries,
             2481 wiz_defined-function locations,
-            619 strings with 5955 characters,
-and the built_in function-call counts, 3658 in all, are:
-= -- 317
-> -- 168
-< -- 3
-+ -- 70
-- -- 50
-* -- 301
-:= -- 548
-add.period$ -- 36
-call.type$ -- 10
-change.case$ -- 19
-chr.to.int$ -- 10
-cite$ -- 18
-duplicate$ -- 170
-empty$ -- 355
-format.name$ -- 62
-if$ -- 782
+            718 strings with 8409 characters,
+and the built_in function-call counts, 8401 in all, are:
+= -- 773
+> -- 358
+< -- 11
++ -- 148
+- -- 104
+* -- 665
+:= -- 1301
+add.period$ -- 89
+call.type$ -- 22
+change.case$ -- 43
+chr.to.int$ -- 22
+cite$ -- 33
+duplicate$ -- 405
+empty$ -- 785
+format.name$ -- 134
+if$ -- 1791
 int.to.chr$ -- 1
-int.to.str$ -- 11
-missing$ -- 7
-newline$ -- 64
-num.names$ -- 18
-pop$ -- 89
+int.to.str$ -- 23
+missing$ -- 19
+newline$ -- 141
+num.names$ -- 54
+pop$ -- 168
 preamble$ -- 1
-purify$ -- 10
+purify$ -- 22
 quote$ -- 0
-skip$ -- 118
+skip$ -- 260
 stack$ -- 0
-substring$ -- 167
-swap$ -- 20
-text.length$ -- 0
+substring$ -- 427
+swap$ -- 50
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 67
-warning$ -- 4
-while$ -- 22
+type$ -- 151
+warning$ -- 7
+while$ -- 67
 width$ -- 0
-write$ -- 140
-(There were 4 warnings)
+write$ -- 325
+(There were 7 warnings)

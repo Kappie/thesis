@@ -1,0 +1,297 @@
+% Chapter Template
+
+\chapter{Classification} % Main chapter title
+
+\label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter 4. \emph{Classification}}
+
+
+Classification is a fundamental learning task. Given a training
+set of objects for which the class is known, we want to identify the class
+of an unknown object.
+
+For example, we want to know if an incoming mail is \emph{spam}
+(unsolicited message sent in bulk) or \emph{ham} (genuine message.) We
+need an algorithm that extracts certain features from the incoming
+message, compares it to features extracted from, say, a million messages
+labeled as spam and a million labeled as ham, and decides to which class
+it belongs.
+
+Most real-world applications take a domain specific approach. Spam filters
+count occurences of words and hyperlinks.
+
+In this chapter, the normalized compression distance \eqref{ncd} is used
+to extract features from objects. No domain knowledge is used. Then,
+a support vector network is used to classify new data. The results are
+compared to literature.  
+
+\section{Classifying file fragments}
+
+In forensics, file reconstruction is a big issue. Corrupted or wiped disks
+may contain scattered fragments of files without metadata. File fragment
+classification is a preliminary step in the reconstruction process.
+
+The Govdocs1 dataset \cite{Garfinkel2009} is used throughout. It contains
+nearly one million files of various types, acquired by querying search
+egines with pseudo-random keywords.
+
+Many authors, like \cite{Li2010}, \cite{Veenman2007} and
+\cite{Axelsson2010}, try to classify compound file types (e.g. .doc or
+.pdf.) Since a .ppt file may contain a .doc file, or a .pdf file may
+contain a .jpg image, there is no way of telling the filetype of a 512 or
+4096 byte block originating from such a file. If you misclassify .pdf as
+     .jpg, did the classifier make a mistake, or did you stumble upon an
+     embedded .jpg withing a .pdf? The answer is unknowable. This
+     oversight is noted in \cite{Roussev2013}.
+
+We will only use filetypes that are not compound, e.g. .html, .csv and
+.jpg.
+
+\subsection{Feature extraction}
+
+Many statistical learning models, like artificial neural networks or
+support vector machines, take as a training set fixed dimensional
+vectors that correspond to a label:
+
+\begin{equation}
+  D = \{ (\vec{x_{i}}, y_{i}) \mid \vec{x_{i}} \in \mathbb{R}^{k}, i = 1, 2, \dots, n \}
+\end{equation}
+
+The mapping of actual objects onto feature vectors is the crucial step. In
+\cite{Li2010}, byte frequencies are used as features, so $\vec{x_{i}}$ is
+effectively a histogram, and $y_{i}$ is one of .dll, .exe, .pdf, .mp3,
+.jpg. 
+
+In \cite{Cilibrasi2007} a method is described to extract features from
+objects using the normalized compression distance. For each file type,
+(randomly) select some \emph{anchors} from the corpus of file fragments.
+For simplicity, let's assume a binary classification problem of fragments
+that are either from a .jpg or a .csv file. After picking 5 anchor
+fragments for each type (totaling 10), we calculate the feature vector $\vec{x}$ for a file $f$ as follows:
+
+\begin{equation}\label{}
+  \vec{x} = ( NCD(f, a_{1}), NCD(f, a_{2}), \dots, NCD(f, a_{10}) )
+\end{equation}
+
+Table \ref{table:feature_vectors} shows an example feature vector of
+a fragment for both file types. It becomes clear why a fragment can be
+characterized this way: it's easy to see that the first fragment is a .csv
+file, since it is close to the first five anchors (the .csv anchors.) .jpg
+is a compressed format, so it has a distance of 1 from both the .csv and
+.jpg anchors.
+
+\begin{table}
+\begin{tabular}{lrrrrrrrrrr}
+\hline
+ .csv & 0.91 & 0.94 & 0.94 & 0.86 & 0.95 & 1.01 & 1.00 & 1.01 & 1.02 & 1.02 \\
+ .jpg & 1.01 & 1.01 & 1.01 & 1.01 & 1.01 & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+\hline
+\end{tabular} \caption{Example feature vector for a .csv and a .jpg
+fragment. The first five anchors are .csv fragments, the last five are
+.jpg fragments. All fragments are randomly drawn from the Govdocs1
+corpus.} \label{table:feature_vectors} \end{table}
+
+\subsection{Support vector machine}
+
+A support vector machine is a trainable binary classifier\footnote{A
+classifier for more than two classes can be created from a combination of
+binary classifiers, for example with a one-vs-rest strategy.}, first introduced in its current form in
+\cite{Cortes1995}. For an extensive introduction, see \cite{Burges1998}.
+In all experiments, I used the Python library scikit-learn
+\cite{Pedregosa2011}, which uses \cite{Fan2014} and \cite{Chang2011}
+internally.
+
+In short, we want to separate the data points in the $d$-dimensional
+feature space with a hyperplane that maximizes the margin (Euclidian
+distance) to the closest data points. 
+
+New data points fall on either side of the hyperplane and are classified
+accordingly.
+
+It is not possible to separate every set of points in all possible ways
+with a linear function (i.e. a hyperplane.) You can show that hyperplanes
+in $\mathbb{R}^{n}$ can, at most, separate $n + 1$ points in all possible
+ways. So, if the training set is larger than the number of features plus
+one, it may be inevitable that points in the training set are
+misclassified by every hyperplane. The user-specified parameter $C$ weighs
+the penalty for misclassified points in the training set. A higher value
+of $C$ results in a hyperplane that misclassifies less training items.
+(This may actually hurt the classifier's predictive power, a phenomenon
+known as overfitting.) 
+
+With some mathematical footwork (see \cite{Burges1998}), the optimization
+problem can be formulated in terms of only the dot products $\langle
+\vec{x_{i}}, \vec{x_{j}} \rangle$ of feature vectors. 
+
+Nonlinear-classifiers can be created by replacing all dot products with
+a \emph{kernel function} $k(\vec{x_{i}}, \vec{x_{j}})$. This effectively
+applies a higher-dimensional transformation to the feature space.
+A hyperplane is then constructed in that space, so that
+non-separable data may become separable. This introduces extra parameters,
+is more memory intensive and is prone to overfitting, but often gives
+better results.
+
+Two common kernel functions are the polynomial one
+
+$$ k(\vec{x_{i}}, \vec{x_{j}}) = ( \langle \vec{x_{i}}, \vec{x_{j}}
+\rangle + r )^{d} $$
+
+which introduces parameters $r$ and $d$, and the radial basis
+function (RBF)
+
+$$ k(\vec{x_{i}}, \vec{x_{j}}) = e^{-\gamma ||\vec{x_{i}}
+- \vec{x_{j}}||^{2}} $$
+
+which introduces $\gamma$.
+
+\subsection{Preparing the data set}
+
+
+At the time of writing, it is possible to download samples of the Govdocs1
+dataset \cite{Garfinkel2009}, called threads, of 1000 files each. I used
+thread 0 through thread 7 as a corpus.
+
+I created two corpora of fragmented files by chopping the files up into 512 or
+4096 byte blocks, throwing away the first and last block of each file. The
+     reasoning is that those blocks often contain header information, which is
+     atypical for the file at large. It also ensures that all blocks are of
+     equal size.
+
+Table \ref{table:number_of_fragments} shows the number of fragments of each file type.
+
+\begin{table}
+\begin{tabular}{lr}
+\hline
+ File type   &   \# of fragments \\
+\hline
+ .csv        &                 47782 \\
+ .jpg        &                 33630 \\
+ .gz         &                 11507 \\
+ .gif        &                 44367 \\
+ .txt        &                 19539 \\
+ .log        &                 25625 \\
+ .xml        &                 9540  \\
+ .html       &                 19934  \\
+\hline
+\end{tabular}
+\caption{Number of 512-byte fragments per file type.}
+\label{table:number_of_fragments}
+\end{table}
+
+
+
+\subsection{Training the classifier}
+
+In each run of the experiment, randomly $n_{\text{anchors}}$ fragments per
+filetype are selected as anchors, $n_{\text{training}}$ fragments per type are
+selected as training data and $n_{\text{testing}}$ fragments per type are
+selected as testing data.
+
+\subsubsection{Scaling the feature vectors}
+
+As is suggested in the scikit-learn documentation (\cite{Pedregosa2011}),
+we rescale the features (the NCDs with the anchors) to have zero mean and
+unit variance.
+
+
+\subsubsection{Parameter estimation}
+
+In \cite{Chih2008}, the authors describe a practical method for training
+a support vector machine, and show that a simple grid search on the
+classifier's parameters can dramatically improve results.
+
+When using a radial basis function kernel, for example, we need to find
+the best combination of $C$ and $\gamma$. First, we try all combinations
+$ \{ (C, \gamma) \mid C, \gamma \in 2^{n}, n = -10, -9, \dots, 9, 10 \}$.
+Then, after the best $C$ and $\gamma$ in that grid have been determined,
+we can perform successively more precise estimations by forming a finer
+grid around the current optimum.
+
+The fitness of the parameters is assessed by $k$-fold cross validation.
+The training set is partitioned into $k$ chunks of equal size. $k - 1$
+chunks are used as training data and the remaining chunk as test data. In
+$k$ runs, every chunk is used once as test data. The results are averaged.
+
+\subsection{Experiments}
+
+\subsubsection{Classifying .csv and .jpg fragments}
+
+As a sanity check, we classify .csv and .jpg fragments. They should be
+easily distinguishable, since .jpg has high entropy (it is a compressed
+format) and .csv is very regular. Table \ref{table:csv_jpg_recall} shows
+this to be the case. The recall rate is almost perfect, and it doesn't
+seem to depend on the amount of anchors per type.
+
+\begin{table}[h]
+\begin{tabular}{rrr}
+\hline
+   anchors/type &   .csv recall \% &   .jpg recall \% \\
+\hline
+             10 &           99.96 &           99.52 \\
+              5 &           99.84 &           99.76 \\
+              2 &           99.88 &           99.34 \\
+\hline
+\end{tabular}
+\caption{
+The results were acquired by averaging recall rates over five
+independent runs. In each run, 1000 distinct training fragments and 500
+distinct test fragments per file type were selected. After feature
+extraction, the support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{1}, 2^{2}, \dots, 2^{9} \}$ and $\gamma \in \{2^{-8},
+2^{-7}, \dots, 2^{0} \}$, optimized for the training set with a two-fold
+cross validation. All fragments are 512 bytes.}
+\label{table:csv_jpg_recall}
+\end{table}
+
+\subsubsection{Classifying .gz and .jpg fragments}
+
+Now, we train the classifier on two compressed formats. The recall rate is
+very bad and .jpg gets many false positives. Training on .gif and .mp3
+instead of .gz gives similar results. Increasing the training set from 1000 to 10000 sample fragments per type doesn't improve results, either.
+
+\begin{table}[h]
+\begin{tabular}{rrr}
+\hline
+   anchors/type &   .gz recall \% &   .jpg recall \% \\
+\hline
+             10 &           31.24 &           96.76 \\
+              2 &           19.52 &           96.84 \\
+\hline
+\end{tabular}
+\caption{
+The results were acquired by averaging recall rates over five
+independent runs. In each run, 1000 distinct training fragments and 500
+distinct test fragments per file type were selected. The kernel is RBF, $C
+\in \{ 2^{-3}, 2^{2}, \dots, 2^{9} \}$ and $\gamma \in \{2^{-8}, 2^{-7},
+\dots, 2^{4} \}$, optimized for the training set with a two-fold cross
+validation. All fragments are 512 bytes.} \label{table:gz_jpg_recall}
+\end{table}
+
+
+
+\subsubsection{Classifying .csv, .html, .jpg and .log}
+
+Table \ref{table:csv_html_jpg_log_recall} shows that classification still
+works very well on four different file types of low entropy. Note that
+adding more anchors now significantly improves results.
+
+
+\begin{table}[h]
+\begin{tabular}{rrrrr}
+\hline
+   anchors/type &   .csv recall \% &   .html recall \% &   .jpg recall \% &   .log recall \% \\
+\hline
+              2 &           94.00    &            92.32 &           98.84 &           87.28 \\
+             10 &           98.48 &            95.04 &           99.12 &           95.24 \\
+\hline
+\end{tabular}
+\caption{
+The results were acquired by averaging recall rates over five
+independent runs. In each run, 1000 distinct training fragments and 500
+distinct test fragments per file type were selected. The kernel is RBF, $C
+\in \{ 2^{0}, 2^{1}, \dots, 2^{5} \}$ and $\gamma \in \{2^{-7}, 2^{-6},
+\dots, 2^{-1} \}$, optimized for the training set with a two-fold cross
+validation. All fragments are 512 bytes.}
+\label{table:csv_html_jpg_log_recall}
+\end{table}

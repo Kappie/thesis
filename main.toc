@@ -4,8 +4,8 @@
 \contentsline {chapter}{\numberline {2}Normalized compression distance}{2}{chapter.5}
 \contentsline {section}{\numberline {2.1}Foundations in Kolmogorov complexity}{2}{section.6}
 \contentsline {subsection}{\numberline {2.1.1}Information distance}{3}{subsection.7}
-\contentsline {section}{\numberline {2.2}Approximating Kolmogorov complexity with a real world compressor}{3}{section.9}
-\contentsline {subsection}{\numberline {2.2.1}A real world compressor does not exploit all regularity}{4}{subsection.11}
+\contentsline {section}{\numberline {2.2}Approximating Kolmogorov complexity with a real-world compressor}{3}{section.9}
+\contentsline {subsection}{\numberline {2.2.1}A compressor does not exploit all regularity}{4}{subsection.11}
 \contentsline {chapter}{\numberline {3}Hierarchical clustering of data}{5}{chapter.13}
 \contentsline {section}{\numberline {3.1}Evolution of placental mammals}{5}{section.14}
 \contentsline {subsection}{\numberline {3.1.1}Distance matrix}{6}{subsection.15}
@@ -14,4 +14,16 @@
 \contentsline {section}{\numberline {3.2}Random correlated data}{7}{section.20}
 \contentsline {section}{\numberline {3.3}Literature}{9}{section.23}
 \contentsline {section}{\numberline {3.4}Source files}{10}{section.25}
-\contentsline {chapter}{Bibliography}{13}{dummy.27}
+\contentsline {chapter}{\numberline {4}Classification}{13}{chapter.27}
+\contentsline {section}{\numberline {4.1}Classifying file fragments}{13}{section.28}
+\contentsline {subsection}{\numberline {4.1.1}Feature extraction}{14}{subsection.29}
+\contentsline {subsection}{\numberline {4.1.2}Support vector machine}{15}{subsection.33}
+\contentsline {subsection}{\numberline {4.1.3}Preparing the data set}{16}{subsection.35}
+\contentsline {subsection}{\numberline {4.1.4}Training the classifier}{16}{subsection.37}
+\contentsline {subsubsection}{\numberline {4.1.4.1}Scaling the feature vectors}{16}{subsubsection.38}
+\contentsline {subsubsection}{\numberline {4.1.4.2}Parameter estimation}{16}{subsubsection.39}
+\contentsline {subsection}{\numberline {4.1.5}Experiments}{17}{subsection.40}
+\contentsline {subsubsection}{\numberline {4.1.5.1}Classifying .csv and .jpg fragments}{17}{subsubsection.41}
+\contentsline {subsubsection}{\numberline {4.1.5.2}Classifying .gz and .jpg fragments}{17}{subsubsection.43}
+\contentsline {subsubsection}{\numberline {4.1.5.3}Classifying .csv, .html, .jpg and .log}{18}{subsubsection.45}
+\contentsline {chapter}{Bibliography}{19}{dummy.47}

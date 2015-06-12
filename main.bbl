@@ -1,4 +1,4 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -70,5 +70,94 @@ clojure @ github.com.
 \bibitem[ghc()]{ghc}
 {The Glasgow Haskell Compiler}.
 \newblock URL \url{https://www.haskell.org/ghc/}.
+
+\bibitem[Garfinkel et~al.(2009)Garfinkel, Farrell, Roussev, and
+  Dinolt]{Garfinkel2009}
+Simson Garfinkel, Paul Farrell, Vassil Roussev, and George Dinolt.
+\newblock {Bringing science to digital forensics with standardized forensic
+  corpora}.
+\newblock \emph{Digital Investigation}, 6\penalty0 (SUPPL.):\penalty0 2--11,
+  2009.
+\newblock ISSN 17422876.
+\newblock \doi{10.1016/j.diin.2009.06.016}.
+
+\bibitem[Li et~al.(2010)Li, Ong, Suganthan, and Thing]{Li2010}
+Q~Li, a~Ong, P~Suganthan, and V~Thing.
+\newblock {A Novel Support Vector Machine Approach to High Entropy Data
+  Fragment Classification}.
+\newblock \emph{Proceedings of the South African Information Security
+  Multi-Conference (SAISMC 2010)}, 2010.
+\newblock URL
+  \url{http://www1.i2r.a-star.edu.sg/~vriz/Publications/WDFIA\_SAISMC2010\_SVM\_High\_Entropy\_Data\_Classification.pdf$\backslash$npapers2://publication/uuid/0A3CD98F-9AA4-4DAF-A2C7-95CB9E080FB4}.
+
+\bibitem[Veenman(2007)]{Veenman2007}
+Cor~J. Veenman.
+\newblock {Statistical disk cluster classification for file carving}.
+\newblock \emph{Proceedings - IAS 2007 3rd Internationl Symposium on
+  Information Assurance and Security}, pages 393--398, 2007.
+\newblock \doi{10.1109/IAS.2007.75}.
+
+\bibitem[Axelsson(2010)]{Axelsson2010}
+Stefan Axelsson.
+\newblock {The normalised compression distance as a file fragment classifier}.
+\newblock \emph{Digital Investigation}, 7\penalty0 (SUPPL.):\penalty0 0--7,
+  2010.
+\newblock ISSN 17422876.
+\newblock \doi{10.1016/j.diin.2010.05.004}.
+
+\bibitem[Roussev and Quates(2013)]{Roussev2013}
+Vassil Roussev and Candice Quates.
+\newblock {File fragment encoding classi fi cation d An empirical approach}.
+\newblock 10:\penalty0 69--77, 2013.
+
+\bibitem[Cilibrasi(2007)]{Cilibrasi2007}
+Rl~Cilibrasi.
+\newblock {Statistical inference through data compression}.
+\newblock 2007.
+\newblock URL
+  \url{http://www.narcis.nl/publication/RecordID/oai:uva.nl:217776}.
+
+\bibitem[Cortes and Vapnik(1995)]{Cortes1995}
+Corinna Cortes and Vladimir Vapnik.
+\newblock {Support-vector networks}.
+\newblock \emph{Machine Learning}, 20\penalty0 (3):\penalty0 273--297, 1995.
+\newblock ISSN 08856125.
+\newblock \doi{10.1007/BF00994018}.
+
+\bibitem[Burges(1998)]{Burges1998}
+Christopher J~C Burges.
+\newblock {A Tutorial on Support Vector Machines for Pattern Recognition}.
+\newblock \emph{Data Mining and Knowledge Discovery}, 2:\penalty0 121--167,
+  1998.
+\newblock ISSN 13845810.
+\newblock \doi{10.1023/A:1009715923555}.
+\newblock URL \url{http://www.springerlink.com/index/Q87856173126771Q.pdf}.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Weiss, and Brucher]{Pedregosa2011}
+Fabian Pedregosa, Ron Weiss, and Matthieu Brucher.
+\newblock {Scikit-learn : Machine Learning in Python}.
+\newblock 12:\penalty0 2825--2830, 2011.
+
+\bibitem[Fan et~al.(2014)Fan, Wang, and Lin]{Fan2014}
+Rong-en Fan, Xiang-rui Wang, and Chih-jen Lin.
+\newblock {LIBLINEAR : A Library for Large Linear Classification}.
+\newblock \emph{Journal of Machine Learning Research}, 9\penalty0
+  (2008):\penalty0 1871--1874, 2014.
+
+\bibitem[Chang and Lin(2011)]{Chang2011}
+Chih-chung Chang and Chih-jen Lin.
+\newblock {LIBSVM : A Library for Support Vector Machines}.
+\newblock \emph{ACM Transactions on Intelligent Systems and Technology (TIST)},
+  2:\penalty0 1--39, 2011.
+\newblock ISSN 21576904.
+\newblock \doi{10.1145/1961189.1961199}.
+
+\bibitem[Hsu et~al.(2008)Hsu, Chang, and Lin]{Chih2008}
+Chih-Wei Hsu, Chih-Chung Chang, and Chih-Jen Lin.
+\newblock {A Practical Guide to Support Vector Classification}.
+\newblock \emph{BJU international}, 101\penalty0 (1):\penalty0 1396--400, 2008.
+\newblock ISSN 1464-410X.
+\newblock \doi{10.1177/02632760022050997}.
+\newblock URL \url{http://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf}.
 
 \end{thebibliography}
