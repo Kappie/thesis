@@ -58,10 +58,10 @@ vectors that correspond to a label:
   D = \{ (\vec{x_{i}}, y_{i}) \mid \vec{x_{i}} \in \mathbb{R}^{k}, i = 1, 2, \dots, n \}
 \end{equation}
 
-The mapping of actual objects onto feature vectors is the crucial step. In
-\cite{Li2010}, byte frequencies are used as features, so $\vec{x_{i}}$ is
-effectively a histogram, and $y_{i}$ is one of .dll, .exe, .pdf, .mp3,
-.jpg. 
+The mapping of actual objects onto feature vectors is the crucial step.
+For example, in \cite{Li2010} byte frequencies are used as features, so
+$\vec{x_{i}}$ is effectively a histogram, and $y_{i}$ is one of .dll,
+.exe, .pdf, .mp3, .jpg. 
 
 In \cite{Cilibrasi2007} a method is described to extract features from
 objects using the normalized compression distance. For each file type,
@@ -129,7 +129,7 @@ a \emph{kernel function} $k(\vec{x_{i}}, \vec{x_{j}})$. This effectively
 applies a higher-dimensional transformation to the feature space.
 A hyperplane is then constructed in that space, so that
 non-separable data may become separable. This introduces extra parameters,
-is more memory intensive and is prone to overfitting, but often gives
+is more memory intensive, and is prone to overfitting, but often gives
 better results.
 
 Two common kernel functions are the polynomial one
@@ -145,7 +145,9 @@ $$ k(\vec{x_{i}}, \vec{x_{j}}) = e^{-\gamma ||\vec{x_{i}}
 
 which introduces $\gamma$.
 
-\subsection{Preparing the data set}
+\subsection{Experimental setup}
+
+\subsubsection{Preparing the data set}
 
 
 At the time of writing, it is possible to download samples of the Govdocs1
@@ -181,14 +183,12 @@ Table \ref{table:number_of_fragments} shows the number of fragments of each file
 
 
 
-\subsection{Training the classifier}
+\subsubsection{Training the classifier}
 
 In each run of the experiment, randomly $n_{\text{anchors}}$ fragments per
 filetype are selected as anchors, $n_{\text{training}}$ fragments per type are
 selected as training data and $n_{\text{testing}}$ fragments per type are
 selected as testing data.
-
-\subsubsection{Scaling the feature vectors}
 
 As is suggested in the scikit-learn documentation (\cite{Pedregosa2011}),
 we rescale the features (the NCDs with the anchors) to have zero mean and
@@ -213,7 +213,7 @@ The training set is partitioned into $k$ chunks of equal size. $k - 1$
 chunks are used as training data and the remaining chunk as test data. In
 $k$ runs, every chunk is used once as test data. The results are averaged.
 
-\subsection{Experiments}
+\subsection{Results}
 
 \subsubsection{Classifying .csv and .jpg fragments}
 
@@ -295,3 +295,38 @@ distinct test fragments per file type were selected. The kernel is RBF, $C
 validation. All fragments are 512 bytes.}
 \label{table:csv_html_jpg_log_recall}
 \end{table}
+
+
+
+\section{Classifying written text by author gender} 
+
+\subsection{Literature overview}
+
+Men and women's language use differs, generally speaking. The
+sociolinguistic essay \cite{Lakoff1973}, a commentary on women's place in
+society, is regarded as the first research on this topic. The author
+postulates there is men's language, like \emph{Shit, you've put the peanut
+butter in the refridgerator again} and women's language, like \emph{Dear
+me, did he kidnap the baby?} (examples taken from the article.)
+
+In \cite{Schler2005}, the authors investigate a large number of blogs in
+different age and gender brackets. They find big differences in style. Men
+use more articles (\emph{a, an, the}) and prepositions (words like
+\emph{after, besides, toward}), while women use more pronouns (\emph{I,
+you, she, \dots}) and words conveying assent and negation (\emph{never,
+ever, no, yes, \dots}) These findings are supported by the empirical
+survey \cite{Mulac2001}. The same features distinguish older bloggers
+(more articles and prepositions) from younger ones (pronouns,
+assent/negation.) There are also differences in content. Words like
+\emph{linux, microsoft, gaming} predict male authorship, while words like
+\emph{shopping, mom, cried} predict female authorship.
+
+The authors of \cite{Schler2005} use 502 stylometric features and 1000
+content-related features (i.e. the 1000 words with the highest predictive
+power) to train a classification algorithm and obtain 80.1\% precision
+with ten-fold cross validation.
+
+\subsection{Classification using the normalized compression distance}
+
+hoi
+
