@@ -34,7 +34,7 @@ classification is a preliminary step in the reconstruction process.
 
 The Govdocs1 dataset \cite{Garfinkel2009} is used throughout. It contains
 nearly one million files of various types, acquired by querying search
-egines with pseudo-random keywords.
+egines with pseudo-random numbers and words.
 
 Many authors, like \cite{Li2010}, \cite{Veenman2007} and
 \cite{Axelsson2010}, try to classify compound file types (e.g. .doc or
@@ -149,7 +149,6 @@ which introduces $\gamma$.
 
 \subsubsection{Preparing the data set}
 
-
 At the time of writing, it is possible to download samples of the Govdocs1
 dataset \cite{Garfinkel2009}, called threads, of 1000 files each. I used
 thread 0 through thread 7 as a corpus.
@@ -183,19 +182,28 @@ Table \ref{table:number_of_fragments} shows the number of fragments of each file
 
 
 
-\subsubsection{Training the classifier}
+\subsubsection{Validating the classifier}
 
-In each run of the experiment, randomly $n_{\text{anchors}}$ fragments per
-filetype are selected as anchors, $n_{\text{training}}$ fragments per type are
-selected as training data and $n_{\text{testing}}$ fragments per type are
-selected as testing data.
+In each experiment, $n_{\text{anchors}}$ anchors per class are randomly selected from
+the dataset. From the remaining fragments, $n_{\text{items}}$ items per
+class are randomly selected to extract features from. They will serve to
+train and validate the classifier.
 
-As is suggested in the scikit-learn documentation (\cite{Pedregosa2011}),
-we rescale the features (the NCDs with the anchors) to have zero mean and
-unit variance.
+\paragraph{Rescaling the feature vectors} As is suggested in the
+scikit-learn documentation (\cite{Pedregosa2011}), after we extract the
+feature vectors from the file fragments (which contain NCDs mainly between
+0.85 and 1.00), we rescale them to have zero mean and unit variance.
+
+The classifier's effectiveness is assessed using $k$-fold cross
+validation. The data set is partitioned into $k$ chunks of equal size. $k
+- 1$ chunks are used as training data and the remaining chunk as test
+data. In $k$ runs, every chunk is used once as test data. So, in the end,
+every fragment in the data set is predicted once. For each training
+partition, a grid search is performed to select the best parameters for
+the model.
 
 
-\subsubsection{Parameter estimation}
+\paragraph{Parameter estimation}
 
 In \cite{Chih2008}, the authors describe a practical method for training
 a support vector machine, and show that a simple grid search on the
@@ -209,9 +217,9 @@ we can perform successively more precise estimations by forming a finer
 grid around the current optimum.
 
 The fitness of the parameters is assessed by $k$-fold cross validation.
-The training set is partitioned into $k$ chunks of equal size. $k - 1$
-chunks are used as training data and the remaining chunk as test data. In
-$k$ runs, every chunk is used once as test data. The results are averaged.
+(So $k$-fold cross validation is used in two places -- to partition
+the whole data set, and to find the best parameters for each of the
+training partitions.)
 
 \subsection{Results}
 
@@ -328,5 +336,4 @@ with ten-fold cross validation.
 
 \subsection{Classification using the normalized compression distance}
 
-hoi
 
