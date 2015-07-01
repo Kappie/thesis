@@ -11,8 +11,14 @@
 
 In this chapter, I cluster vastly different types of data using the
 normalized compression distance. I introduce a lightweight alternative to
-the CompLearn Toolkit \ref{CompLearn}. My clustering tool uses common
-Python and R libraries, and is less than a hundred lines of code.
+the CompLearn Toolkit \cite{CompLearn}, and show that it produces insightful results, that in some cases provide more information those produced by the CompLearn toolkit.
+
+Instead of the hierarchical clustering method used in CompLearn
+\cite{Cilibrasi2011}, I use clustering methods that are in the R standard
+library. I use the Python binding to the lzma compression algorithm to
+calculate normalized compression distances.
+
+The code \cite{ClusteringGithub} is freely available.
 
 To explain the method, I first cluster mitochondrial gene sequences of
 mammals.
@@ -43,7 +49,7 @@ Sumatran orangutan (\emph{Pongo abelii}), using opossum (\emph{Didelphis
 virginiana}), wallaroo (\emph{Macropus robustus}), and the platypus
 (\emph{Ornithorhynchus anatinus}).
 
-In \cite{Cilibrasi2005}, 4 more mammals were added: Australian echidna
+In \cite{Cilibrasi2005}, four more mammals were added: Australian echidna
 (\emph{Tachyglossus aculeatus}), brown bear (\emph{Ursus arctos}), polar
 bear (\emph{Ursus maritimus}), and the common carp (\emph{Cyprinus
 carpio}). The common carp is not a mammal and is used as an outgroup. It
@@ -77,6 +83,7 @@ Entry $i$, $j$ is the distance between item $i$ and item $j$, i.e.
 $\text{NCD}(i, j)$. The distance matrix for the 24 animals is displayed in
 table \ref{table:distance_matrix}.
 
+
 \begin{table}[ht]
 \scalebox{0.50}{
 \begin{tabular}{rrrrrrrrrrrrrrrrrrrrrrrrr}
@@ -106,12 +113,34 @@ blueWhale & 0.01 & 0.72 & 0.86 & 0.67 & 0.78 & 0.60 & 0.83 & 0.24 & 0.81 & 0.80 
   wallaroo & 0.81 & 0.82 & 0.87 & 0.80 & 0.85 & 0.81 & 0.85 & 0.83 & 0.86 & 0.86 & 0.80 & 0.79 & 0.81 & 0.85 & 0.81 & 0.68 & 0.86 & 0.85 & 0.83 & 0.83 & 0.82 & 0.87 & 0.01 & 0.80 \\ 
   whiteRhinoceros & 0.64 & 0.66 & 0.89 & 0.65 & 0.78 & 0.64 & 0.86 & 0.65 & 0.78 & 0.79 & 0.61 & 0.61 & 0.51 & 0.79 & 0.78 & 0.84 & 0.82 & 0.79 & 0.86 & 0.68 & 0.77 & 0.81 & 0.82 & 0.01 \\ 
    \hline
-\end{tabular} }
-\caption{Distance matrix of genome sequences of 24 animals. To obtain the
-$\text{NCD}$, I used ruby-xz, the Ruby binding to compressor liblzma, with settings
-\texttt{compression\underline{{ }}level = 9}, \texttt{extreme = true},
-\texttt{check = :none}. }
-\label{table:distance_matrix} \end{table}
+\end{tabular} } \caption{ The NCDs were calculated with \texttt{lzma}, the
+Python binding to the LZMA compression algorithm, with the 
+parameters shown in listing \ref{lzma_params}.} \label{table:distance_matrix} \end{table}
+
+
+
+\begin{lstlisting}[language=Python,frame=single,caption=Parameters for
+compression using the LZMA algorithm.,label=lzma_params]
+{
+  "id": lzma.FILTER_LZMA2, 
+  "preset": 9 | lzma.PRESET_EXTREME, 
+  "dict_size": 5000000,  
+  "lc": 2, 
+  "pb": 0,
+  "nice_len": 273,
+}
+\end{lstlisting}
+
+\subsubsection{Compression parameters}
+
+Listing \ref{lzma_params} shows the filters used in calculating the normalized compression distances between files. The goal is to compress the files as good as possible, since we want to approximate the true Kolmogorov complexity, without an unreasonable penalty in speed.
+
+I studied the effect of changing the filters by randomly taking two distinct dna sequences, and calculating the compression ratio of the concatenation, averaged over a thousand runs.
+
+\lstinline{nice_len} denotes the length after which the LZMA algorithm stops looking for a longer match, and it is set to its maximum value. Setting \lstinline{nice_len = 4}, the highest default in the xz toolkit, produces a significantly worse compression ratio, as expected.
+
+\lstinline{lc}, the number of literal context bits, is the number is bits of a byte from the input, starting from the first bit, which is assumed to correlate with the next byte. For example, in English language, a uppercase letter (starting with 010 in US-ASCII) is usually followed by a lower case letter (starting with 011). According to the manpage of xz \cite{XzManpage}, setting \lstinline{lc = 4} usually gives the best compression, but may also make compression worse. In the case of dna sequences, the default \lstinline{lc = 3} proved best.
+
 
 \subsection{Clustering method}
 
@@ -135,13 +164,13 @@ Figure \ref{figure:dendrogram_mammals} shows the phylogeny tree obtained by aver
   \label{figure:dendrogram_mammals}
 \end{figure}
 
-Comparison with \cite{Cao1998} shows that the dendrogram in this paper is a little bit off. Here, $((\text{finWhale}, \text{blueWhale}), \text{cow})$ joins $(\text{whiteRhinoceros}, \text{horse})$ first, while in the cited paper $((\text{harborSeal}, \text{greySeal}), \text{cat})$ first joins $(\text{horse}, \text{rhinoceros})$. Also, higher up in the tree, in this paper, the rodents join the ferungulates, and then the primates join, while in the cited paper the primates and ferungulates join first, and then the rodents join.
+Comparison with \cite{Cao1998} shows that the dendrogram in this paper is a off in two places. Here, $((\text{finWhale}, \text{blueWhale}), \text{cow})$ joins $(\text{whiteRhinoceros}, \text{horse})$ first, while in the cited paper $((\text{harborSeal}, \text{greySeal}), \text{cat})$ first joins $(\text{horse}, \text{rhinoceros})$. Also, higher up in the tree, in this paper, the rodents join the ferungulates, and then the primates join, while in the cited paper the primates and ferungulates join first, and then the rodents join.
 
-\cite{Cilibrasi2005}, which also uses NCD, but clusters with an algorithm described in \cite{Cilibrasi2011}, does not make these mistakes. But, the algorithm they use works especially well for evolutionary data, and they attain a global fitness score of $S(T) = 0.996$ for their tree $T$, which is exceptionally high. Other trees, containing, for example, random correlated data, have $S(T) = 0.905$ for the best found tree.
+\cite{Cilibrasi2005}, which also uses NCD, but clusters with an algorithm described in \cite{Cilibrasi2011}, does not make these mistakes. But, the algorithm they use works especially well for evolutionary data, and they attain a global fitness score of $S(T) = 0.996$ for their tree $T$, which is exceptionally high. Other trees, for example the one containing random correlated data (see below), have fitness scores of around 0.90.
 
 \section{Random correlated data}
 
-In this section, we will cluster files containing random bytes, which we have partially correlated, so we know what the clustering should be like. This method of validation was taken from \cite{Cilibrasi2005}. All byte sequences have been generated with the random\_bytes function of the Ruby library SecureRandom.
+In this section, we will cluster files containing random bytes, which we have partially correlated, so we know what the clustering should be like. This method of validation was taken from \cite{Cilibrasi2005}. All byte sequences have been generated with the \lstinline{random_bytes} function of the Ruby library SecureRandom.
 
 Let \emph{tags} $a$, $b$, $c$ be blocks of 1000 random bytes. We create file $a$ in the following way: generate 80.000 random bytes, and at 10 distinct positions (picked from $0 \dots 79$) replace a 1000 byte block with tag $a$. To create file $ab$, we insert tag $a$ at 10 distinct positions, then insert tag $b$ at 10 distinct positions, possibly overwriting some of the earlier insertions of tag $a$. In this way, we create files $a$, $b$, $c$, $ab$, $ac$, $bc$, and $abc$. The clustering is shown in \ref{figure:7_artificial_files}.
 
@@ -153,7 +182,7 @@ I opted for single linkage clustering, i.e. the distance between clusters $A$ an
   \label{figure:7_artificial_files}
 \end{figure}
 
-In figure \ref{figure:22_artificial_files}, the experiment is repeated with 22 files, mimicking the experiment done in \cite{Cilibrasi2005}. The result is what you would expect, and you could argue that this clustering is more insightful than the quartet tree method, since it shows the degree in which two clusters are related. $abcd$ is closer to $abce$ than $jk$ is to any file labeled by more than two tags, for example.
+In figure \ref{figure:22_artificial_files}, the experiment is repeated with 22 files, mimicking the experiment done in \cite{Cilibrasi2005}. The result is what you would expect, and you could argue that this clustering is more insightful than the quartet tree method, since that method does not show the degree in which two clusters are related. The clustering presented here shows that $abcd$ is closer to $abce$ than $jk$ is to any file labeled by more than two tags, for example.
 
 \begin{figure}[h!]
   \includegraphics[scale=0.7]{22-artificial-files-single.pdf}
