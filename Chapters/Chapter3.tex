@@ -5,25 +5,25 @@
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 3. \emph{Hierarchical clustering of data}} 
+\lhead{Chapter 3. \emph{Hierarchical clustering of data}}
 
 \section{Introduction}
 
 In this chapter, I cluster vastly different types of data using the
-normalized compression distance. I introduce a lightweight alternative to
-the CompLearn Toolkit \cite{CompLearn}, and show that it produces insightful results, that in some cases provide more information those produced by the CompLearn toolkit.
+normalized compression distance. Using only standard libraries, I introduce a lightweight alternative to the CompLearn Toolkit \cite{CompLearn}, an open source tool for NCD clustering.
 
 Instead of the hierarchical clustering method used in CompLearn
-\cite{Cilibrasi2011}, I use clustering methods that are in the R standard
-library. I use the Python binding to the lzma compression algorithm to
-calculate normalized compression distances.
+  \cite{Cilibrasi2011}, I use hierarchical clustering methods that are in the R standard
+library. R provides functions like \lstinline{hclust}, which make it very easy to implement and switch between the most common agglomerative hierarchical clustering methods, and has built-in functionality to plot dendrograms. The clustering module of scikit-learn \cite{Pedregosa2011} in Python is also a viable option. To calculate compression distances between files, I use the Python binding to the lzma compression algorithm.
+
+I show that using these simple clustering methods, insightful results can be obtained that are comparable to \cite{Cilibrasi2005}. The authors of \cite{Cilibrasi2005} focus on constructing a tree that is globally optimal, in an evolutionary sense, with an approximation to an NP-hard problem, while my methods use standard agglomerative clustering methods. The methods in this paper preserve a sense of distance between clusters, which is lost in the method used in \cite{Cilibrasi2011}.
 
 The code \cite{ClusteringGithub} is freely available.
 
-To explain the method, I first cluster mitochondrial gene sequences of
-mammals.
-
 \section{Evolution of placental mammals}
+
+To explain the method, I first cluster mitochondrial gene sequences of
+mammals. I use sequences of the same 24 mammals used in \cite{Cilibrasi2005}, and compare results.
 
 Reconstructing an evolutionary tree has intuitive appeal. It should lend
 itself well to hierarchical clustering, since species emerge from common
@@ -31,7 +31,7 @@ ancestors. And, within biology, there is agreement on what the true
 phylogeny tree is: the brown bear and polar bear are closely related, etc.
 Only higher up on the tree there is ongoing debate. Do the primates first
 join with the rodents, or are they more closely connected to the
-ferungulates? 
+ferungulates?
 
 All materials were taken from the GenBank database \cite{GenBank}.
 
@@ -55,8 +55,79 @@ bear (\emph{Ursus maritimus}), and the common carp (\emph{Cyprinus
 carpio}). The common carp is not a mammal and is used as an outgroup. It
 should join the phylogeny tree at the very top.
 
-The authors of \cite{Cilibrasi2005} cluster the complete mitochondrial
-genome sequences with the normalized compression distance. They use
+\subsection{Distance matrix}
+
+The distance matrix contains the distances between all pairs of items.
+Entry $i$, $j$ is the distance between item $i$ and item $j$, i.e.
+$\text{NCD}(i, j)$. The distance matrix for the 24 animals is displayed in
+table \ref{table:distance_matrix}.
+
+\begin{table}[ht]
+\scalebox{0.50}{
+\begin{tabular}{rrrrrrrrrrrrrrrrrrrrrrrrr}
+  \hline
+blueWhale & 0.01 & 0.72 & 0.86 & 0.67 & 0.78 & 0.60 & 0.83 & 0.24 & 0.81 & 0.80 & 0.67 & 0.66 & 0.62 & 0.78 & 0.77 & 0.82 & 0.81 & 0.77 & 0.83 & 0.70 & 0.79 & 0.78 & 0.83 & 0.63 \\
+  brownBear & 0.71 & 0.01 & 0.89 & 0.63 & 0.84 & 0.72 & 0.85 & 0.69 & 0.84 & 0.82 & 0.56 & 0.56 & 0.69 & 0.81 & 0.80 & 0.84 & 0.84 & 0.82 & 0.84 & 0.11 & 0.82 & 0.83 & 0.84 & 0.64 \\
+  carp & 0.87 & 0.88 & 0.01 & 0.88 & 0.89 & 0.87 & 0.89 & 0.89 & 0.89 & 0.89 & 0.89 & 0.88 & 0.87 & 0.88 & 0.86 & 0.88 & 0.89 & 0.89 & 0.90 & 0.88 & 0.88 & 0.89 & 0.88 & 0.88 \\
+  cat & 0.67 & 0.59 & 0.87 & 0.01 & 0.79 & 0.68 & 0.84 & 0.69 & 0.79 & 0.79 & 0.59 & 0.57 & 0.61 & 0.81 & 0.77 & 0.80 & 0.80 & 0.80 & 0.82 & 0.60 & 0.75 & 0.81 & 0.78 & 0.59 \\
+  chimpanzee & 0.78 & 0.83 & 0.90 & 0.81 & 0.01 & 0.77 & 0.87 & 0.82 & 0.49 & 0.34 & 0.80 & 0.79 & 0.79 & 0.29 & 0.84 & 0.88 & 0.47 & 0.17 & 0.89 & 0.83 & 0.84 & 0.47 & 0.86 & 0.80 \\
+  cow & 0.61 & 0.73 & 0.87 & 0.68 & 0.78 & 0.01 & 0.84 & 0.61 & 0.79 & 0.78 & 0.66 & 0.66 & 0.62 & 0.81 & 0.77 & 0.82 & 0.81 & 0.77 & 0.84 & 0.71 & 0.76 & 0.81 & 0.81 & 0.62 \\
+  echidna & 0.84 & 0.87 & 0.89 & 0.85 & 0.85 & 0.83 & 0.01 & 0.86 & 0.85 & 0.86 & 0.87 & 0.87 & 0.84 & 0.88 & 0.81 & 0.81 & 0.87 & 0.85 & 0.55 & 0.87 & 0.84 & 0.86 & 0.84 & 0.83 \\
+  finWhale & 0.25 & 0.72 & 0.89 & 0.71 & 0.81 & 0.62 & 0.85 & 0.01 & 0.81 & 0.82 & 0.70 & 0.69 & 0.64 & 0.81 & 0.80 & 0.84 & 0.80 & 0.78 & 0.85 & 0.72 & 0.81 & 0.81 & 0.85 & 0.64 \\
+  gibbon & 0.83 & 0.85 & 0.90 & 0.81 & 0.51 & 0.81 & 0.88 & 0.85 & 0.01 & 0.51 & 0.82 & 0.83 & 0.81 & 0.50 & 0.85 & 0.89 & 0.53 & 0.50 & 0.90 & 0.85 & 0.85 & 0.54 & 0.87 & 0.79 \\
+  gorilla & 0.79 & 0.81 & 0.90 & 0.82 & 0.35 & 0.79 & 0.88 & 0.83 & 0.50 & 0.01 & 0.79 & 0.82 & 0.83 & 0.35 & 0.83 & 0.89 & 0.46 & 0.35 & 0.87 & 0.82 & 0.82 & 0.47 & 0.88 & 0.80 \\
+  graySeal & 0.69 & 0.56 & 0.88 & 0.60 & 0.79 & 0.66 & 0.84 & 0.69 & 0.79 & 0.80 & 0.01 & 0.16 & 0.64 & 0.80 & 0.77 & 0.82 & 0.80 & 0.78 & 0.85 & 0.55 & 0.78 & 0.80 & 0.80 & 0.61 \\
+  harborSeal & 0.67 & 0.54 & 0.88 & 0.58 & 0.78 & 0.64 & 0.85 & 0.69 & 0.80 & 0.80 & 0.16 & 0.01 & 0.61 & 0.79 & 0.76 & 0.83 & 0.77 & 0.77 & 0.84 & 0.54 & 0.77 & 0.77 & 0.80 & 0.60 \\
+  horse & 0.63 & 0.65 & 0.88 & 0.63 & 0.76 & 0.62 & 0.85 & 0.64 & 0.77 & 0.79 & 0.62 & 0.60 & 0.01 & 0.79 & 0.78 & 0.81 & 0.78 & 0.78 & 0.83 & 0.66 & 0.76 & 0.79 & 0.80 & 0.49 \\
+  human & 0.78 & 0.83 & 0.88 & 0.83 & 0.30 & 0.79 & 0.87 & 0.80 & 0.50 & 0.35 & 0.82 & 0.82 & 0.78 & 0.01 & 0.82 & 0.87 & 0.46 & 0.30 & 0.88 & 0.83 & 0.82 & 0.46 & 0.86 & 0.78 \\
+  mouse & 0.77 & 0.79 & 0.86 & 0.76 & 0.81 & 0.76 & 0.81 & 0.80 & 0.81 & 0.82 & 0.77 & 0.76 & 0.75 & 0.83 & 0.01 & 0.78 & 0.83 & 0.82 & 0.83 & 0.78 & 0.54 & 0.83 & 0.77 & 0.74 \\
+  opossum & 0.82 & 0.81 & 0.87 & 0.80 & 0.87 & 0.81 & 0.84 & 0.82 & 0.87 & 0.88 & 0.82 & 0.82 & 0.81 & 0.87 & 0.80 & 0.01 & 0.88 & 0.87 & 0.84 & 0.82 & 0.82 & 0.88 & 0.68 & 0.83 \\
+  orangutan & 0.80 & 0.83 & 0.90 & 0.82 & 0.46 & 0.82 & 0.88 & 0.80 & 0.52 & 0.46 & 0.82 & 0.79 & 0.83 & 0.45 & 0.84 & 0.88 & 0.01 & 0.47 & 0.89 & 0.83 & 0.83 & 0.25 & 0.86 & 0.82 \\
+  pigmyChimpanzee & 0.77 & 0.81 & 0.90 & 0.81 & 0.17 & 0.77 & 0.88 & 0.81 & 0.49 & 0.34 & 0.82 & 0.79 & 0.79 & 0.29 & 0.83 & 0.87 & 0.47 & 0.01 & 0.89 & 0.81 & 0.83 & 0.47 & 0.86 & 0.78 \\
+  platypus & 0.83 & 0.85 & 0.89 & 0.86 & 0.89 & 0.82 & 0.56 & 0.84 & 0.89 & 0.87 & 0.84 & 0.84 & 0.87 & 0.87 & 0.83 & 0.82 & 0.88 & 0.88 & 0.01 & 0.85 & 0.84 & 0.89 & 0.84 & 0.85 \\
+  polarBear & 0.70 & 0.10 & 0.89 & 0.62 & 0.81 & 0.70 & 0.86 & 0.71 & 0.84 & 0.81 & 0.56 & 0.56 & 0.66 & 0.82 & 0.79 & 0.83 & 0.82 & 0.81 & 0.85 & 0.01 & 0.78 & 0.82 & 0.82 & 0.65 \\
+  rat & 0.78 & 0.82 & 0.89 & 0.75 & 0.80 & 0.76 & 0.83 & 0.78 & 0.81 & 0.82 & 0.79 & 0.77 & 0.74 & 0.82 & 0.55 & 0.82 & 0.81 & 0.83 & 0.86 & 0.82 & 0.01 & 0.81 & 0.84 & 0.75 \\
+  sumatranOrangutan & 0.78 & 0.82 & 0.89 & 0.80 & 0.47 & 0.80 & 0.86 & 0.79 & 0.52 & 0.47 & 0.80 & 0.80 & 0.77 & 0.44 & 0.84 & 0.87 & 0.24 & 0.47 & 0.88 & 0.82 & 0.82 & 0.01 & 0.87 & 0.78 \\
+  wallaroo & 0.81 & 0.82 & 0.87 & 0.80 & 0.85 & 0.81 & 0.85 & 0.83 & 0.86 & 0.86 & 0.80 & 0.79 & 0.81 & 0.85 & 0.81 & 0.68 & 0.86 & 0.85 & 0.83 & 0.83 & 0.82 & 0.87 & 0.01 & 0.80 \\
+  whiteRhinoceros & 0.64 & 0.66 & 0.89 & 0.65 & 0.78 & 0.64 & 0.86 & 0.65 & 0.78 & 0.79 & 0.61 & 0.61 & 0.51 & 0.79 & 0.78 & 0.84 & 0.82 & 0.79 & 0.86 & 0.68 & 0.77 & 0.81 & 0.82 & 0.01 \\
+   \hline
+\end{tabular} } \caption{ The NCDs were calculated with \texttt{lzma}, the
+Python binding to the LZMA compression algorithm, with the
+parameters shown in listing \ref{lzma_params}.} \label{table:distance_matrix} \end{table}
+
+
+
+\begin{lstlisting}[language=Python,frame=single,caption=Parameters for
+compression using the LZMA algorithm.,label=lzma_params]
+{
+  "id": lzma.FILTER_LZMA2,
+  "preset": 9 | lzma.PRESET_EXTREME,
+  "dict_size": 5000000,
+  "lc": 2,
+  "pb": 0,
+  "nice_len": 273,
+}
+\end{lstlisting}
+
+\subsubsection{Compression parameters}
+
+Listing \ref{lzma_params} shows the filters used in calculating the normalized compression distances between files. The goal is to compress the files as well as possible, since we want to approximate the true Kolmogorov complexity --- but without an unreasonable penalty in speed.
+
+I studied the effect of changing the filters by randomly taking two distinct dna sequences, and calculating the compression ratio of the concatenation, averaged over a thousand runs.
+
+\lstinline{nice_len} denotes the length after which the LZMA algorithm stops looking for a longer match, and it is set to its maximum value. Setting \lstinline{nice_len = 4}, the highest default in the xz toolkit, produces a significantly worse compression ratio, as expected.
+
+\lstinline{lc}, the number of literal context bits, is the number is bits of a byte from the input, starting from the first bit, which is assumed to correlate with the next byte. For example, in English language, a uppercase letter (starting with 010 in US-ASCII) is usually followed by a lower case letter (starting with 011). According to the manpage of xz \cite{XzManpage}, setting \lstinline{lc = 4} usually gives the best compression, but may also make compression worse. In the case of dna sequences, the default \lstinline{lc = 3} proved best.
+
+\lstinline{pb} affects what kind of alignment is assumed in the uncompressed data. Setting \lstinline{pb = 0}, which is optimized for ascii, gives a minor improvement over the default, \lstinline{pb = 2}.
+
+\subsection{Comparison of clustering methods}
+
+In hierarchical clustering, the goal is to build a hierarchy of clusters from a distance matrix. The hierarchy can be displayed as a binary tree.
+
+\subsubsection{Quartet tree method}
+
+The authors of \cite{Cilibrasi2005} use
 a clustering algorithm described by them in
 \cite{Cilibrasi2011}. The algorithm tries to optimize a global criterion,
 namely the (normalized) summed weights of all consistent quartet
@@ -73,78 +144,11 @@ data) there should exist an evolutionary tree that embeds all the most
 likely quartet topologies, and, given enough time, the heuristic presented
 in \cite{Cilibrasi2011} finds the true tree.
 
-Now, we will cluster the same 24 genome sequences with a much simpler
-algorithm (average linkage) and compare results.
+\subsubsection{Agglomerative (hierarchical) clustering with a linkage criterion}
 
-\subsection{Distance matrix}
+In this paper, I take a lightweight approach by using standard R libraries.
 
-The distance matrix contains the distances between all pairs of items.
-Entry $i$, $j$ is the distance between item $i$ and item $j$, i.e.
-$\text{NCD}(i, j)$. The distance matrix for the 24 animals is displayed in
-table \ref{table:distance_matrix}.
-
-
-\begin{table}[ht]
-\scalebox{0.50}{
-\begin{tabular}{rrrrrrrrrrrrrrrrrrrrrrrrr}
-  \hline
-blueWhale & 0.01 & 0.72 & 0.86 & 0.67 & 0.78 & 0.60 & 0.83 & 0.24 & 0.81 & 0.80 & 0.67 & 0.66 & 0.62 & 0.78 & 0.77 & 0.82 & 0.81 & 0.77 & 0.83 & 0.70 & 0.79 & 0.78 & 0.83 & 0.63 \\ 
-  brownBear & 0.71 & 0.01 & 0.89 & 0.63 & 0.84 & 0.72 & 0.85 & 0.69 & 0.84 & 0.82 & 0.56 & 0.56 & 0.69 & 0.81 & 0.80 & 0.84 & 0.84 & 0.82 & 0.84 & 0.11 & 0.82 & 0.83 & 0.84 & 0.64 \\ 
-  carp & 0.87 & 0.88 & 0.01 & 0.88 & 0.89 & 0.87 & 0.89 & 0.89 & 0.89 & 0.89 & 0.89 & 0.88 & 0.87 & 0.88 & 0.86 & 0.88 & 0.89 & 0.89 & 0.90 & 0.88 & 0.88 & 0.89 & 0.88 & 0.88 \\ 
-  cat & 0.67 & 0.59 & 0.87 & 0.01 & 0.79 & 0.68 & 0.84 & 0.69 & 0.79 & 0.79 & 0.59 & 0.57 & 0.61 & 0.81 & 0.77 & 0.80 & 0.80 & 0.80 & 0.82 & 0.60 & 0.75 & 0.81 & 0.78 & 0.59 \\ 
-  chimpanzee & 0.78 & 0.83 & 0.90 & 0.81 & 0.01 & 0.77 & 0.87 & 0.82 & 0.49 & 0.34 & 0.80 & 0.79 & 0.79 & 0.29 & 0.84 & 0.88 & 0.47 & 0.17 & 0.89 & 0.83 & 0.84 & 0.47 & 0.86 & 0.80 \\ 
-  cow & 0.61 & 0.73 & 0.87 & 0.68 & 0.78 & 0.01 & 0.84 & 0.61 & 0.79 & 0.78 & 0.66 & 0.66 & 0.62 & 0.81 & 0.77 & 0.82 & 0.81 & 0.77 & 0.84 & 0.71 & 0.76 & 0.81 & 0.81 & 0.62 \\ 
-  echidna & 0.84 & 0.87 & 0.89 & 0.85 & 0.85 & 0.83 & 0.01 & 0.86 & 0.85 & 0.86 & 0.87 & 0.87 & 0.84 & 0.88 & 0.81 & 0.81 & 0.87 & 0.85 & 0.55 & 0.87 & 0.84 & 0.86 & 0.84 & 0.83 \\ 
-  finWhale & 0.25 & 0.72 & 0.89 & 0.71 & 0.81 & 0.62 & 0.85 & 0.01 & 0.81 & 0.82 & 0.70 & 0.69 & 0.64 & 0.81 & 0.80 & 0.84 & 0.80 & 0.78 & 0.85 & 0.72 & 0.81 & 0.81 & 0.85 & 0.64 \\ 
-  gibbon & 0.83 & 0.85 & 0.90 & 0.81 & 0.51 & 0.81 & 0.88 & 0.85 & 0.01 & 0.51 & 0.82 & 0.83 & 0.81 & 0.50 & 0.85 & 0.89 & 0.53 & 0.50 & 0.90 & 0.85 & 0.85 & 0.54 & 0.87 & 0.79 \\ 
-  gorilla & 0.79 & 0.81 & 0.90 & 0.82 & 0.35 & 0.79 & 0.88 & 0.83 & 0.50 & 0.01 & 0.79 & 0.82 & 0.83 & 0.35 & 0.83 & 0.89 & 0.46 & 0.35 & 0.87 & 0.82 & 0.82 & 0.47 & 0.88 & 0.80 \\ 
-  graySeal & 0.69 & 0.56 & 0.88 & 0.60 & 0.79 & 0.66 & 0.84 & 0.69 & 0.79 & 0.80 & 0.01 & 0.16 & 0.64 & 0.80 & 0.77 & 0.82 & 0.80 & 0.78 & 0.85 & 0.55 & 0.78 & 0.80 & 0.80 & 0.61 \\ 
-  harborSeal & 0.67 & 0.54 & 0.88 & 0.58 & 0.78 & 0.64 & 0.85 & 0.69 & 0.80 & 0.80 & 0.16 & 0.01 & 0.61 & 0.79 & 0.76 & 0.83 & 0.77 & 0.77 & 0.84 & 0.54 & 0.77 & 0.77 & 0.80 & 0.60 \\ 
-  horse & 0.63 & 0.65 & 0.88 & 0.63 & 0.76 & 0.62 & 0.85 & 0.64 & 0.77 & 0.79 & 0.62 & 0.60 & 0.01 & 0.79 & 0.78 & 0.81 & 0.78 & 0.78 & 0.83 & 0.66 & 0.76 & 0.79 & 0.80 & 0.49 \\ 
-  human & 0.78 & 0.83 & 0.88 & 0.83 & 0.30 & 0.79 & 0.87 & 0.80 & 0.50 & 0.35 & 0.82 & 0.82 & 0.78 & 0.01 & 0.82 & 0.87 & 0.46 & 0.30 & 0.88 & 0.83 & 0.82 & 0.46 & 0.86 & 0.78 \\ 
-  mouse & 0.77 & 0.79 & 0.86 & 0.76 & 0.81 & 0.76 & 0.81 & 0.80 & 0.81 & 0.82 & 0.77 & 0.76 & 0.75 & 0.83 & 0.01 & 0.78 & 0.83 & 0.82 & 0.83 & 0.78 & 0.54 & 0.83 & 0.77 & 0.74 \\ 
-  opossum & 0.82 & 0.81 & 0.87 & 0.80 & 0.87 & 0.81 & 0.84 & 0.82 & 0.87 & 0.88 & 0.82 & 0.82 & 0.81 & 0.87 & 0.80 & 0.01 & 0.88 & 0.87 & 0.84 & 0.82 & 0.82 & 0.88 & 0.68 & 0.83 \\ 
-  orangutan & 0.80 & 0.83 & 0.90 & 0.82 & 0.46 & 0.82 & 0.88 & 0.80 & 0.52 & 0.46 & 0.82 & 0.79 & 0.83 & 0.45 & 0.84 & 0.88 & 0.01 & 0.47 & 0.89 & 0.83 & 0.83 & 0.25 & 0.86 & 0.82 \\ 
-  pigmyChimpanzee & 0.77 & 0.81 & 0.90 & 0.81 & 0.17 & 0.77 & 0.88 & 0.81 & 0.49 & 0.34 & 0.82 & 0.79 & 0.79 & 0.29 & 0.83 & 0.87 & 0.47 & 0.01 & 0.89 & 0.81 & 0.83 & 0.47 & 0.86 & 0.78 \\ 
-  platypus & 0.83 & 0.85 & 0.89 & 0.86 & 0.89 & 0.82 & 0.56 & 0.84 & 0.89 & 0.87 & 0.84 & 0.84 & 0.87 & 0.87 & 0.83 & 0.82 & 0.88 & 0.88 & 0.01 & 0.85 & 0.84 & 0.89 & 0.84 & 0.85 \\ 
-  polarBear & 0.70 & 0.10 & 0.89 & 0.62 & 0.81 & 0.70 & 0.86 & 0.71 & 0.84 & 0.81 & 0.56 & 0.56 & 0.66 & 0.82 & 0.79 & 0.83 & 0.82 & 0.81 & 0.85 & 0.01 & 0.78 & 0.82 & 0.82 & 0.65 \\ 
-  rat & 0.78 & 0.82 & 0.89 & 0.75 & 0.80 & 0.76 & 0.83 & 0.78 & 0.81 & 0.82 & 0.79 & 0.77 & 0.74 & 0.82 & 0.55 & 0.82 & 0.81 & 0.83 & 0.86 & 0.82 & 0.01 & 0.81 & 0.84 & 0.75 \\ 
-  sumatranOrangutan & 0.78 & 0.82 & 0.89 & 0.80 & 0.47 & 0.80 & 0.86 & 0.79 & 0.52 & 0.47 & 0.80 & 0.80 & 0.77 & 0.44 & 0.84 & 0.87 & 0.24 & 0.47 & 0.88 & 0.82 & 0.82 & 0.01 & 0.87 & 0.78 \\ 
-  wallaroo & 0.81 & 0.82 & 0.87 & 0.80 & 0.85 & 0.81 & 0.85 & 0.83 & 0.86 & 0.86 & 0.80 & 0.79 & 0.81 & 0.85 & 0.81 & 0.68 & 0.86 & 0.85 & 0.83 & 0.83 & 0.82 & 0.87 & 0.01 & 0.80 \\ 
-  whiteRhinoceros & 0.64 & 0.66 & 0.89 & 0.65 & 0.78 & 0.64 & 0.86 & 0.65 & 0.78 & 0.79 & 0.61 & 0.61 & 0.51 & 0.79 & 0.78 & 0.84 & 0.82 & 0.79 & 0.86 & 0.68 & 0.77 & 0.81 & 0.82 & 0.01 \\ 
-   \hline
-\end{tabular} } \caption{ The NCDs were calculated with \texttt{lzma}, the
-Python binding to the LZMA compression algorithm, with the 
-parameters shown in listing \ref{lzma_params}.} \label{table:distance_matrix} \end{table}
-
-
-
-\begin{lstlisting}[language=Python,frame=single,caption=Parameters for
-compression using the LZMA algorithm.,label=lzma_params]
-{
-  "id": lzma.FILTER_LZMA2, 
-  "preset": 9 | lzma.PRESET_EXTREME, 
-  "dict_size": 5000000,  
-  "lc": 2, 
-  "pb": 0,
-  "nice_len": 273,
-}
-\end{lstlisting}
-
-\subsubsection{Compression parameters}
-
-Listing \ref{lzma_params} shows the filters used in calculating the normalized compression distances between files. The goal is to compress the files as good as possible, since we want to approximate the true Kolmogorov complexity, without an unreasonable penalty in speed.
-
-I studied the effect of changing the filters by randomly taking two distinct dna sequences, and calculating the compression ratio of the concatenation, averaged over a thousand runs.
-
-\lstinline{nice_len} denotes the length after which the LZMA algorithm stops looking for a longer match, and it is set to its maximum value. Setting \lstinline{nice_len = 4}, the highest default in the xz toolkit, produces a significantly worse compression ratio, as expected.
-
-\lstinline{lc}, the number of literal context bits, is the number is bits of a byte from the input, starting from the first bit, which is assumed to correlate with the next byte. For example, in English language, a uppercase letter (starting with 010 in US-ASCII) is usually followed by a lower case letter (starting with 011). According to the manpage of xz \cite{XzManpage}, setting \lstinline{lc = 4} usually gives the best compression, but may also make compression worse. In the case of dna sequences, the default \lstinline{lc = 3} proved best.
-
-
-\subsection{Clustering method}
-
-In hierarchical clustering, the goal is to build a hierarchy of clusters from a distance matrix. The hierarchy can be displayed as a binary tree. One of the simplest ways to do this is to put every object in its own cluster, and then merge greedily based on a linkage criterion, until all items have been merged into a single cluster.
+One of the simplest ways to cluster hierarchically is to put every object in its own cluster, and then merge greedily based on a linkage criterion, until all items have been merged into a single cluster.
 
 In single linkage, at each step the two clusters are merged with the smallest pairwise distance. This is also called \emph{nearest neighbor} clustering.
 
@@ -154,7 +158,14 @@ Average linkage is a compromise between single and complete linkage. The distanc
 
 $$ d(A, B) = \frac{1}{|A||B|} \sum_{a \in A}\sum_{b \in B} d(a, b) $$
 
-\subsection{Phylogeny tree}
+Assuming the distance matrix is represented as a .csv file, the R code becomes as simple as listing \ref{R_clustering}.
+
+\begin{lstlisting}[language=R, frame=single, caption={R code for plotting a hierarchical clustering. \lstinline{method} can be set to \lstinline{"average"}, \lstinline{"single"} or \lstinline{"complete"}, among other options. }, label=R_clustering]
+distance_matrix <- as.dist( as.matrix( read.csv(distances, row.names=1 ) ) )
+clustering <- hclust(distance_matrix, method="average")
+plot(clustering)
+\end{lstlisting}
+\subsection{Phylogeny tree of 24 mammals}
 
 Figure \ref{figure:dendrogram_mammals} shows the phylogeny tree obtained by average link clustering.
 
@@ -164,9 +175,11 @@ Figure \ref{figure:dendrogram_mammals} shows the phylogeny tree obtained by aver
   \label{figure:dendrogram_mammals}
 \end{figure}
 
-Comparison with \cite{Cao1998} shows that the dendrogram in this paper is a off in two places. Here, $((\text{finWhale}, \text{blueWhale}), \text{cow})$ joins $(\text{whiteRhinoceros}, \text{horse})$ first, while in the cited paper $((\text{harborSeal}, \text{greySeal}), \text{cat})$ first joins $(\text{horse}, \text{rhinoceros})$. Also, higher up in the tree, in this paper, the rodents join the ferungulates, and then the primates join, while in the cited paper the primates and ferungulates join first, and then the rodents join.
+Comparison with \cite{Cilibrasi2005}, which uses CompLearn \cite{CompLearn}, shows that the dendrogram in this paper differs in two places. Here, $((\text{finWhale}, \text{blueWhale}), \text{cow})$ joins $(\text{whiteRhinoceros}, \text{horse})$ first, while in the cited paper $((\text{harborSeal}, \text{greySeal}), \text{cat})$ first joins $(\text{horse}, \text{whiteRhinoceros})$. Also, higher up in the tree, in this paper, the rodents join the ferungulates, and then the primates join, while in the cited paper the primates and ferungulates join first, and then the rodents join. The results of \cite{Cilibrasi2005} are in line with biological analysis (e.g. \cite{Cao1998}), so average linkage is less accurate than the quartet-tree method in this case.
 
-\cite{Cilibrasi2005}, which also uses NCD, but clusters with an algorithm described in \cite{Cilibrasi2011}, does not make these mistakes. But, the algorithm they use works especially well for evolutionary data, and they attain a global fitness score of $S(T) = 0.996$ for their tree $T$, which is exceptionally high. Other trees, for example the one containing random correlated data (see below), have fitness scores of around 0.90.
+But, this is no surprise, since the quartet-tree method \cite{Cilibrasi2011} works especially well for evolutionary data, and an exceptionally high global fitness score of $S(T) = 0.996$ is attained in \cite{Cilibrasi2005}. Other trees, for example containing random correlated data (see comparison below), have fitness scores of around 0.9.
+
+Average linkage gives a sense of distance between clusters, which is lacking in the quartet-tree method. It is easily seen from figure \ref{figure:dendrogram_mammals} that, for example, the Polar Bear and Brown Bear are very close together, and that the primates form a very tight cluster.
 
 \section{Random correlated data}
 
@@ -178,11 +191,11 @@ I opted for single linkage clustering, i.e. the distance between clusters $A$ an
 
 \begin{figure}[h!]
   \includegraphics[scale=0.7]{7-artificial-files-single.pdf}
-  \caption{Single link clustering of seven 80 kB files containing random bytes, which are partially correlated. The height at which clusters join is the distance between them, according to the linkage criterion.}
+  \caption{Single link clustering of seven 80 kB files containing random bytes, which are partially correlated. The height at which clusters join   is the distance between them, according to the linkage criterion.}
   \label{figure:7_artificial_files}
 \end{figure}
 
-In figure \ref{figure:22_artificial_files}, the experiment is repeated with 22 files, mimicking the experiment done in \cite{Cilibrasi2005}. The result is what you would expect, and you could argue that this clustering is more insightful than the quartet tree method, since that method does not show the degree in which two clusters are related. The clustering presented here shows that $abcd$ is closer to $abce$ than $jk$ is to any file labeled by more than two tags, for example.
+In figure \ref{figure:22_artificial_files}, the experiment is repeated with 22 files, mimicking the experiment done in \cite{Cilibrasi2005}. The result is what you would expect, and you could argue that this clustering is more insightful than the quartet tree method, since that method does not show the degree in which two clusters are related. The clustering here shows that $abcd$ is closer to $abce$ than $jk$ is to any file labeled by more than two tags. It also clearly shows that single tag files have the least correlation, and no correlation among themselves, because they all join the other files at an equal distance of about 1.
 
 \begin{figure}[h!]
   \includegraphics[scale=0.7]{22-artificial-files-single.pdf}
@@ -212,3 +225,5 @@ We cluster ten files from the Ruby standard library \cite{ruby} at commit \textt
 \end{figure}
 
 
+\section{Conclusion}
+The experiments in this chapter show that with a bare minimum of code, using the Python binding to the lzma compression algorithm, and built-in R functions for hierarchical clustering, results can be obtained that are comparable those in \cite{Cilibrasi2005}, which used \cite{CompLearn} for their experiments. The clustering method used in CompLearn, presented in \cite{Cilibrasi2011}, is computationally demanding, and doesn't preserve distance between clusters, but theoretically is able to attain a globally optimal score for evolutionary data. The clustering methods used in this chapter, i.e. single, average and complete linkage agglomerative clustering, are much simpler, are accessible from the R standard library, and preserve a sense of distance between clusters.

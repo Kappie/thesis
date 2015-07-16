@@ -10,7 +10,7 @@
 
 In this chapter we will make explicit the idea of similarity based on file compression. But first, we explain the notion of Kolmogorov complexity. For a complete reference, see \cite{li2009introduction}.
 
-The Kolmogorov complexity of a string $x$, written $K(x)$, is the length of the shortest program that outputs $x$. 
+The Kolmogorov complexity of a string $x$, written $K(x)$, is the length of the shortest program that outputs $x$.
 
 Intuitively, $111\dots111$, a string of a million ones, is not very complex. It does not contain much information. Indeed, the Kolmogorov complexity of this string is low. A 27-byte Ruby program produces it:
 
@@ -29,6 +29,22 @@ print "011...010"
 \end{verbatim}
 
 The Kolmogorov complexity of a string $x$, given a string $y$, denoted by $K(x|y)$, is the length of the shortest program that outputs $x$, given $y$ as input.
+
+\subsection{The Kolmogorov complexity is not computable}
+
+To prove that $K(x)$ is not computable, suppose there is a program \lstinline{kolmogorov_complexity(x)} that computes $K(x)$. Now consider the following program, that outputs a string $x$ with $K(x) \geq n$.
+
+\begin{lstlisting}[frame=single]
+def p(n)
+  all_strings_of_length(n).each do |x|
+    if kolmogorov_complexity(x) >= n
+      return x
+    end
+  end
+end
+\end{lstlisting}
+
+Encoding $x$ with $p(n)$ takes only $c + 2log(n)$ bits: a constant number of bits for the programs \lstinline{kolmogorov_complexity(x)} and \lstinline{p(n)}, and $2log(n)$ to encode $n$. Since there exist strings with arbitrarily large Kolmogorov complexity, this is a contradiction, hence $K(x)$ is not computable.
 
 \subsection{Information distance}
 
@@ -60,7 +76,16 @@ where $xy$ is the concatenation of $x$ and $y$, and $C(x)$ is the length of $x$,
 
 The $\text{NCD}$ is central to this work. It is the real-world approximation of the normalized information distance \eqref{nid}.
 
+The authors of \cite{Cilibrasi2005} show that most (if not all) real-world compressors guarantee that the NCD is a quasi-universal similarity metric, by satisfying the following properties:
+
+\begin{enumerate}
+  \item \emph{idempotency}: $C(xx) = C(x)$
+  \item \emph{monotonicity}: $C(xy) \geq C(x)$
+  \item \emph{symmetry}: $C(xy) = C(yx)$
+  \item \emph{distributivity}: $C(xy) + C(z) \leq C(xz) + C(yz)$
+\end{enumerate}
+
 \subsection{A compressor does not exploit all regularity}
 Since $K$ is incomputable, we have no idea how far off the length given by $C$ is. Consider $31415...$, the string consisting of the first $10^{9}$ digits of $\pi$. The Kolmogorov complexity of this string is low: a simple program, perhaps exploiting a converging series formula, will produce it. Any real-world compressor $C$, however, fails to compress this string by even a few bits\footnote{A textual representation "31415..." can actually be compressed significantly by almost every compressor, but this is an encoding issue. The file consists only of the bytes 0 through 9, which can be more efficiently encoded using, for example, a system where each decimal number is assigned a four bit code (which is still naive.) For clarity, I do not concern myself with encoding in this chapter. Every finite alphabet can be recoded in binary, so it is customary to only think about binary strings in the literature. Conceptually, nothing changes. }.
 
-In the following chapters (and extensively in \cite{Cilibrasi2005}) it is demonstrated that the $\text{NCD}$ is adequate for many applications.
+In the following chapters (and extensively in \cite{Cilibrasi2005}) it is demonstrated that, while not every regularity is captured by a real-world compressor, the $\text{NCD}$ is still adequate for many applications.

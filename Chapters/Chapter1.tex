@@ -2,16 +2,22 @@
 
 \chapter{Introduction} % Main chapter title
 
-\label{Intro} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+\label{Intro} % For referencing the chapter elsewhere, use \ref{Chapter1}
 
 \lhead{\emph{Introduction}} % This is for the header on each page - perhaps a shortened title
 
-\section{Similarity of data}
-
 How do we know that Dutch is more similar to German than it is to French? How do we know that Bob Dylan's music is closer to The Beatles' than it is to Bach's?
 
-Does a computer know? 
+Does a computer know?
 
-This thesis concerns a method expressing similarity of data that is feature free: it does not use domain knowledge about the data (for example, word origins or grammar rules in the case of languages.) The method is based on file compression and is rooted in Kolmogorov complexity.
+This thesis concerns a method expressing similarity of data that is feature free: it does not use domain knowledge about the data (for example, word origins or grammar rules in the case of languages, or stylometric features in the case of author attribution.) The method is based on file compression and is rooted in Kolmogorov complexity.
 
 The idea is easy to grasp. If a compressor compresses the concatenation of two files better than it compresses the files separately, it must have found some regularities that appear in both files. This compression gain is used to define a similarity metric that aims to capture the similarity of every dominant feature of the data.
+
+Two main areas of machine learning are covered: clustering and classification of data. I introduce very light-weight code, using only standard libraries, to use this technique in experiment.
+
+Chapter \ref{Chapter2} explains the mathematical background of this similarity metric.
+
+In the domain of clustering (chapter \ref{Chapter3}), this thesis shows that with a bare minimum of code, using compression techniques, you get results that are comparable to domain specific approaches, for example in the field of phylogeny \cite{Cao1998}. I use the Python binding to the compression algorithm lzma and \lstinline{hclust}, a built-in function of the R programming language, for hierarchical cluster analysis. I will compare my results to \cite{Cilibrasi2005}, which also uses compression, but a more elaborate clustering algorithm. I show that my results are comparable, and arguably better, since my clustering preserves a sense of distance between the clusters, and does not assume that data originates from an evolutionary process.
+
+In the domain of classification (chapter \ref{Chapter4}),  I explore a method based on compression that has been hinted at in \cite{Cilibrasi2007}, but which has, to my knowledge, never been used in experiment. To classify a new piece of data, one determines how well it compresses with \emph{anchors}, preselected pieces of data from each class. I show that in gender attribution to written text, this method works almost as well as the state of the art, domain specific approach, which uses stylometric and content-related features. Again, the code is light-weight: I only use methods from the Python machine learning library scikit-learn \cite{Pedregosa2011}.

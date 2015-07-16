@@ -6,6 +6,7 @@
 
 \lhead{Chapter 4. \emph{Classification}}
 
+\section{Introduction}
 
 Classification is a fundamental learning task. Given a training
 set of objects for which the class is known, we want to identify the class
@@ -22,9 +23,14 @@ Most real-world applications take a domain specific approach. Spam filters
 count occurences of words and hyperlinks.
 
 In this chapter, the normalized compression distance \eqref{ncd} is used
-to extract features from objects. No domain knowledge is used. Then,
-a support vector network is used to classify new data. The results are
-compared to literature.  
+to extract features from objects. No domain knowledge is used. This method of feature extraction is hinted at in \cite{Cilibrasi2007}, but has, to my knowledge, never been used in experiment.
+
+To classify a new piece of data, one determines how well it compresses with \emph{anchors}, preselected pieces of data from each class. The distances with these anchors are the features representing an object. With these features, a support vector machine can be trained. This support vector machine can then classify new objects.
+
+First, I classify file fragments of different file types (for example .jpg or .xml), a common forensics task. This is a good sanity check for this method, because fragments should, in general, compress well with fragments of the same file type, and not well with fragments from different file types.
+
+Then, I show that in gender attribution to written text, this method works almost as well as the state of the art, domain specific approaches, which use stylometric and content-related features.  Again, the code is light-weight: I only use methods from the Python machine learning library scikit-learn \cite{Pedregosa2011}.
+
 
 \section{Classifying file fragments}
 
@@ -40,10 +46,7 @@ Many authors, like \cite{Li2010}, \cite{Veenman2007} and
 \cite{Axelsson2010}, try to classify compound file types (e.g. .doc or
 .pdf.) Since a .ppt file may contain a .doc file, or a .pdf file may
 contain a .jpg image, there is no way of telling the filetype of a 512 or
-4096 byte block originating from such a file. If you misclassify .pdf as
-     .jpg, did the classifier make a mistake, or did you stumble upon an
-     embedded .jpg withing a .pdf? The answer is unknowable. This
-     oversight is noted in \cite{Roussev2013}.
+4096 byte block originating from such a file. If you misclassify .pdf as .jpg, did the classifier make a mistake, or did you stumble upon an embedded .jpg withing a .pdf? The answer is unknowable. This oversight is noted in \cite{Roussev2013}.
 
 We will only use filetypes that are not compound, e.g. .html, .csv and
 .jpg.
@@ -61,7 +64,7 @@ vectors that correspond to a label:
 The mapping of actual objects onto feature vectors is the crucial step.
 For example, in \cite{Li2010} byte frequencies are used as features, so
 $\vec{x_{i}}$ is effectively a histogram, and $y_{i}$ is one of .dll,
-.exe, .pdf, .mp3, .jpg. 
+.exe, .pdf, .mp3, .jpg.
 
 In \cite{Cilibrasi2007} a method is described to extract features from
 objects using the normalized compression distance. For each file type,
@@ -104,7 +107,7 @@ internally.
 
 In short, we want to separate the data points in the $d$-dimensional
 feature space with a hyperplane that maximizes the margin (Euclidian
-distance) to the closest data points. 
+distance) to the closest data points.
 
 New data points fall on either side of the hyperplane and are classified
 accordingly.
@@ -118,11 +121,11 @@ misclassified by every hyperplane. The user-specified parameter $C$ weighs
 the penalty for misclassified points in the training set. A higher value
 of $C$ results in a hyperplane that misclassifies less training items.
 (This may actually hurt the classifier's predictive power, a phenomenon
-known as overfitting.) 
+known as overfitting.)
 
 With some mathematical footwork (see \cite{Burges1998}), the optimization
 problem can be formulated in terms of only the dot products $\langle
-\vec{x_{i}}, \vec{x_{j}} \rangle$ of feature vectors. 
+\vec{x_{i}}, \vec{x_{j}} \rangle$ of feature vectors.
 
 Nonlinear-classifiers can be created by replacing all dot products with
 a \emph{kernel function} $k(\vec{x_{i}}, \vec{x_{j}})$. This effectively
@@ -181,7 +184,6 @@ Table \ref{table:number_of_fragments} shows the number of fragments of each file
 \end{table}
 
 
-
 \subsubsection{Validating the classifier}
 
 In each experiment, $n_{\text{anchors}}$ anchors per class are randomly selected from
@@ -228,26 +230,26 @@ training partitions.)
 As a sanity check, we classify .csv and .jpg fragments. They should be
 easily distinguishable, since .jpg has high entropy (it is a compressed
 format) and .csv is very regular. Table \ref{table:csv_jpg_recall} shows
-this to be the case. The recall rate is almost perfect, and it doesn't
-seem to depend on the amount of anchors per type.
+this to be the case. The precision is almost perfect.
 
 \begin{table}[h]
 \begin{tabular}{rrr}
 \hline
-   anchors/type &   .csv recall \% &   .jpg recall \% \\
+   anchors/type &   .csv precision \% &   .jpg precision \% \\
 \hline
-             10 &           99.96 &           99.52 \\
-              5 &           99.84 &           99.76 \\
-              2 &           99.88 &           99.34 \\
+              2 &           .9932 &           .9966 \\
+              5 &           .9943 &           .9982 \\
+              10 &          .9970 &           .9980 \\
 \hline
 \end{tabular}
 \caption{
-The results were acquired by averaging recall rates over five
-independent runs. In each run, 1000 distinct training fragments and 500
-distinct test fragments per file type were selected. After feature
-extraction, the support vector machine with an RBF kernel was trained by doing a grid search
-for $C \in \{ 2^{1}, 2^{2}, \dots, 2^{9} \}$ and $\gamma \in \{2^{-8},
-2^{-7}, \dots, 2^{0} \}$, optimized for the training set with a two-fold
+The results were acquired by averaging precision rates over five
+independent runs. In each run, the distinct anchors were drawn randomly from the dataset.
+Then, 3000 distinct fragments (different from the anchors) per file type were selected.
+The predictions were validated with five-fold cross validation.
+The support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
+2^{-7}, \dots, 2^{1} \}$, optimized for each of the five training folds with a three-fold
 cross validation. All fragments are 512 bytes.}
 \label{table:csv_jpg_recall}
 \end{table}
@@ -258,22 +260,26 @@ Now, we train the classifier on two compressed formats. The recall rate is
 very bad and .jpg gets many false positives. Training on .gif and .mp3
 instead of .gz gives similar results. Increasing the training set from 1000 to 10000 sample fragments per type doesn't improve results, either.
 
+This outcome is to be expected, because compressed file formats can hardly be compressed any further by lzma (or another compressor). They are effectively \emph{random} sequences, although they are, of course, not really random. Here, the difference between a real world compressor and the theoretical notion of the Kolmogorov complexity is especially clear: the (theoretical) information distance between two objects does not change if they are compressed, but the real-world equivalent, the normalized compression distance, does, because compressors cannot find the patterns in the already compressed data.
+
 \begin{table}[h]
-\begin{tabular}{rrr}
+\begin{tabular}{rrrrr}
 \hline
-   anchors/type &   .gz recall \% &   .jpg recall \% \\
+   anchors/type &   .gz precision &   .gz recall &   .jpg precision &   .jpg recall \\
 \hline
-             10 &           31.24 &           96.76 \\
-              2 &           19.52 &           96.84 \\
+              2 &           .6622 &           .7151 &    .7162 &    .4295 \\
+             10 &           1     &           96.84 &    1     &    1     \\
 \hline
 \end{tabular}
 \caption{
-The results were acquired by averaging recall rates over five
-independent runs. In each run, 1000 distinct training fragments and 500
-distinct test fragments per file type were selected. The kernel is RBF, $C
-\in \{ 2^{-3}, 2^{2}, \dots, 2^{9} \}$ and $\gamma \in \{2^{-8}, 2^{-7},
-\dots, 2^{4} \}$, optimized for the training set with a two-fold cross
-validation. All fragments are 512 bytes.} \label{table:gz_jpg_recall}
+The results were acquired by averaging precision rates over five
+independent runs. In each run, the distinct anchors were drawn randomly from the dataset.
+Then, 3000 distinct fragments (different from the anchors) per file type were selected.
+The predictions were validated with five-fold cross validation.
+The support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
+2^{-7}, \dots, 2^{1} \}$, optimized for each of the five training folds with a three-fold
+cross validation. All fragments are 512 bytes.} \label{table:gz_jpg_recall}
 \end{table}
 
 
@@ -305,10 +311,7 @@ validation. All fragments are 512 bytes.}
 \end{table}
 
 
-
-\section{Classifying written text by author gender} 
-
-\subsection{Literature overview}
+\section{Classifying written text by author gender}
 
 Men and women's language use differs, generally speaking. The
 sociolinguistic essay \cite{Lakoff1973}, a commentary on women's place in
@@ -316,6 +319,11 @@ society, is regarded as the first research on this topic. The author
 postulates there is men's language, like \emph{Shit, you've put the peanut
 butter in the refridgerator again} and women's language, like \emph{Dear
 me, did he kidnap the baby?} (examples taken from the article.)
+
+The topic is fuzzy. It is not clear what patterns we are looking for.
+That means the NCD is a good choice as a distance metric: we trust the compressor to find enough patterns, and do not input any domain-specific information ourselves.
+
+\subsection{Literature overview}
 
 In \cite{Schler2005}, the authors investigate a large number of blogs in
 different age and gender brackets. They find big differences in style. Men
@@ -334,6 +342,46 @@ content-related features (i.e. the 1000 words with the highest predictive
 power) to train a classification algorithm and obtain 80.1\% precision
 with ten-fold cross validation.
 
-\subsection{Classification using the normalized compression distance}
+In \cite{Mikros2013}, a similar approach (stylometric and feature words) is used, but the author confuses gender attribution with authorship attribution (a task that is much better understood.) The data set consists of 1000 blog posts, by 10 male authors and 10 female authors (50 posts per author). The classifier predicts the right gender 85.4\% of the time, but because there are so many posts of the same author in the data set, the results of this experiment cannot be compared to the results of \cite{Schler2005} and this paper.
 
+Finally, \cite{Sarawgi2011} tries to predict gender based purely on writing style (as opposed to \cite{Schler2005} and \cite{Mikros2013} who also use content-related features.) The author tries to mitigate the gender-bias in topic and genre by hand selecting blogs posts with the same topic, e.g. the television show \emph{How I Met Your Mother}. This seems problematic to me: a human might unconsciously select blog posts that comply to her idea of male or female writing, thereby biasing the experiment. Also, the dataset is very small (280 posts, 140 per gender) and the author tries eight different feature-extraction methods, of which the best one yields 71.3\%. This result is hard to compare, because it is the best result of multiple hypotheses, whereas other papers used only one.
 
+\subsection{Classifying blogs by author gender using the normalized compression distance}
+\subsubsection{Cleaning the corpus}
+
+I use the Blog Authorship Corpus, assembled by the authors of \cite{Schler2005}, which contains blogs of 19320 bloggers (averaging 35 posts per person). Blogs are labeled by author gender, age, and genre.
+
+For each blog, I used only the plain text of each post, removing leading and trailing newlines. I tried to replace characters that were not utf-8 with comparable utf-8 alternatives using \lstinline{utf8_utils} \cite{utf8_utils}, a Ruby library. If this could not be done, I discarded the post. I automatically removed all posts that were not in English, using the Ruby binding \cite{ruby_cld} to the Google Chromium Compact Language Detector \cite{google_cld}. The detector also removed posts that only consisted of a hyperlink. I concatenated the remaining posts into a single file.
+
+\subsubsection{Results}
+Table \ref{table:female_male_precision} shows the results achieved by classifying based on the normalized compression distance. A 75\% recall rate is quite remarkable, considering no domain features at all were used. Many experiments using domain-specific features do not even reach this number, and the highest valid figure I saw in the literature is 80.1\%.
+
+\begin{table}[h]
+\begin{tabular}{rrr}
+\hline
+   anchors/type &   female recall \% &   male recall \% \\
+\hline
+            100 &             0.745 &          0.7551 \\
+\hline
+\end{tabular}
+\caption{
+The anchor blogs were randomly drawn from the dataset. Then, 5000 blogs, different from the anchors, were selected for each gender.
+The predictions were validated with five-fold cross validation.
+The support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
+2^{-7}, \dots, 2^{1} \}$, optimized for each of the five training folds with a three-fold
+cross validation. }
+\label{table:female_male_precision}
+\end{table}
+
+\subsection{Conclusion}
+
+This chapter shows that the normalized compression distance can be used to extract features from data without using domain-specific knowledge. Those features can then be used to train a classifier (in this paper, a support vector machine) to predict the class of new data items. This method was briefly described in \cite{Cilibrasi2007}, but has, to my knowledge, never been used in experiment. The Python script to run experiments is small, and makes extensive use of the scikit-learn library \cite{Pedregosa2011}.
+
+In the field of file fragment classification. Bla
+
+In the field of gender attribution, it is less clear what patterns to look for, and the NCD shines. In classifying the gender of the authors of blogs, my algorithm has a 75\% precision rate, which is very high, considering no domain specific features where extracted, and the highest number in literature is 80.1\%, on the same corpus I used.
+
+As follow-up research, one could try to use a combined method: Using (a subset of) the stylometric and content-related features, along with NCDs with fifty or hundred anchors.
+
+Other fields in which NCD could be applied are classification of fiction and non-fiction text, as is done in \cite{Koppel2002}, or other classification by genre, like news stories or financial messages.

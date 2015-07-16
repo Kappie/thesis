@@ -1,9 +1,40 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{34}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Cao et~al.(1998)Cao, Janke, Waddell, Westerman, Takenaka, Murata,
+  Okada, P\"{a}\"{a}bo, and Hasegawa]{Cao1998}
+Ying Cao, Axel Janke, Peter~J. Waddell, Michael Westerman, Osamu Takenaka,
+  Shigenori Murata, Norihiro Okada, Svante P\"{a}\"{a}bo, and Masami Hasegawa.
+\newblock {Conflict among individual mitochondrial proteins in resolving the
+  phylogeny of eutherian orders}.
+\newblock \emph{Journal of Molecular Evolution}, 47\penalty0 (3):\penalty0
+  307--322, 1998.
+\newblock ISSN 00222844.
+\newblock \doi{10.1007/PL00006389}.
+
+\bibitem[Cilibrasi and Vit\'{a}nyi(2005)]{Cilibrasi2005}
+Rudi Cilibrasi and P.~M~B Vit\'{a}nyi.
+\newblock {Clustering by compression}.
+\newblock \emph{IEEE Transactions on Information Theory}, 51\penalty0
+  (4):\penalty0 1523--1545, 2005.
+\newblock ISSN 00189448.
+\newblock \doi{10.1109/TIT.2005.844059}.
+
+\bibitem[Cilibrasi(2007)]{Cilibrasi2007}
+Rl~Cilibrasi.
+\newblock {Statistical inference through data compression}.
+\newblock 2007.
+\newblock URL
+  \url{http://www.narcis.nl/publication/RecordID/oai:uva.nl:217776}.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Weiss, and Brucher]{Pedregosa2011}
+Fabian Pedregosa, Ron Weiss, and Matthieu Brucher.
+\newblock {Scikit-learn : Machine Learning in Python}.
+\newblock 12:\penalty0 2825--2830, 2011.
 
 \bibitem[Li and Vit\'{a}nyi(2009)]{li2009introduction}
 Ming Li and Paul M~B Vit\'{a}nyi.
@@ -29,28 +60,10 @@ M.~Li, X.~Chen, X.~Li, B.~Ma, and P.M.B. Vitanyi.
 \newblock ISSN 0018-9448.
 \newblock \doi{10.1109/TIT.2004.838101}.
 
-\bibitem[Cilibrasi and Vit\'{a}nyi(2005)]{Cilibrasi2005}
-Rudi Cilibrasi and P.~M~B Vit\'{a}nyi.
-\newblock {Clustering by compression}.
-\newblock \emph{IEEE Transactions on Information Theory}, 51\penalty0
-  (4):\penalty0 1523--1545, 2005.
-\newblock ISSN 00189448.
-\newblock \doi{10.1109/TIT.2005.844059}.
-
-\bibitem[Gen()]{GenBank}
-0aa01af9101ad7f92eedf17301e3269ae811fb50 @ www.ncbi.nlm.nih.gov.
-\newblock URL \url{http://www.ncbi.nlm.nih.gov/genbank/}.
-
-\bibitem[Cao et~al.(1998)Cao, Janke, Waddell, Westerman, Takenaka, Murata,
-  Okada, P\"{a}\"{a}bo, and Hasegawa]{Cao1998}
-Ying Cao, Axel Janke, Peter~J. Waddell, Michael Westerman, Osamu Takenaka,
-  Shigenori Murata, Norihiro Okada, Svante P\"{a}\"{a}bo, and Masami Hasegawa.
-\newblock {Conflict among individual mitochondrial proteins in resolving the
-  phylogeny of eutherian orders}.
-\newblock \emph{Journal of Molecular Evolution}, 47\penalty0 (3):\penalty0
-  307--322, 1998.
-\newblock ISSN 00222844.
-\newblock \doi{10.1007/PL00006389}.
+\bibitem[Cilibrasi(2015)]{CompLearn}
+Rudi Cilibrasi.
+\newblock {CompLearn}, 2015.
+\newblock URL \url{www.complearn.org}.
 
 \bibitem[Cilibrasi and Vitnyi(2011)]{Cilibrasi2011}
 Rudi~L. Cilibrasi and P.~M~B Vitnyi.
@@ -59,8 +72,22 @@ Rudi~L. Cilibrasi and P.~M~B Vitnyi.
 \newblock ISSN 00313203.
 \newblock \doi{10.1016/j.patcog.2010.08.033}.
 
-\bibitem[rub()]{ruby}
-ruby @ github.com.
+\bibitem[Kapteijns(2015)]{ClusteringGithub}
+Geert Kapteijns.
+\newblock {Clustering by NCD}.
+\newblock 2015.
+\newblock URL \url{https://github.com/Kappie/clustering}.
+
+\bibitem[Gen()]{GenBank}
+0aa01af9101ad7f92eedf17301e3269ae811fb50 @ www.ncbi.nlm.nih.gov.
+\newblock URL \url{http://www.ncbi.nlm.nih.gov/genbank/}.
+
+\bibitem[XzM(2014)]{XzManpage}
+{XZ Ubuntu manual entry}, 2014.
+\newblock URL \url{http://manpages.ubuntu.com/manpages/raring/man1/xz.1.html}.
+
+\bibitem[rub({\natexlab{a}})]{ruby}
+ruby @ github.com, {\natexlab{a}}.
 \newblock URL \url{https://github.com/ruby/ruby}.
 
 \bibitem[clo()]{clojure}
@@ -110,13 +137,6 @@ Vassil Roussev and Candice Quates.
 \newblock {File fragment encoding classi fi cation d An empirical approach}.
 \newblock 10:\penalty0 69--77, 2013.
 
-\bibitem[Cilibrasi(2007)]{Cilibrasi2007}
-Rl~Cilibrasi.
-\newblock {Statistical inference through data compression}.
-\newblock 2007.
-\newblock URL
-  \url{http://www.narcis.nl/publication/RecordID/oai:uva.nl:217776}.
-
 \bibitem[Cortes and Vapnik(1995)]{Cortes1995}
 Corinna Cortes and Vladimir Vapnik.
 \newblock {Support-vector networks}.
@@ -132,11 +152,6 @@ Christopher J~C Burges.
 \newblock ISSN 13845810.
 \newblock \doi{10.1023/A:1009715923555}.
 \newblock URL \url{http://www.springerlink.com/index/Q87856173126771Q.pdf}.
-
-\bibitem[Pedregosa et~al.(2011)Pedregosa, Weiss, and Brucher]{Pedregosa2011}
-Fabian Pedregosa, Ron Weiss, and Matthieu Brucher.
-\newblock {Scikit-learn : Machine Learning in Python}.
-\newblock 12:\penalty0 2825--2830, 2011.
 
 \bibitem[Fan et~al.(2014)Fan, Wang, and Lin]{Fan2014}
 Rong-en Fan, Xiang-rui Wang, and Chih-jen Lin.
@@ -159,5 +174,64 @@ Chih-Wei Hsu, Chih-Chung Chang, and Chih-Jen Lin.
 \newblock ISSN 1464-410X.
 \newblock \doi{10.1177/02632760022050997}.
 \newblock URL \url{http://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf}.
+
+\bibitem[Lakoff(1973)]{Lakoff1973}
+Robin Lakoff.
+\newblock {Language and Woman ' s Place}.
+\newblock \emph{Language in Society}, 2\penalty0 (1):\penalty0 45--80, 1973.
+\newblock ISSN 0047-4045.
+\newblock \doi{10.1017/S0047404500000051}.
+
+\bibitem[Schler et~al.(2005)Schler, Koppel, Argamon, and
+  Pennebaker]{Schler2005}
+Jonathan Schler, Moshe Koppel, Shlomo Argamon, and James Pennebaker.
+\newblock {Effects of Age and Gender on Blogging}.
+\newblock \emph{AAAI Spring Symposium: Computational Approaches to Analyzing
+  Weblogs}, pages 199--205, 2005.
+
+\bibitem[Mulac et~al.(2001)Mulac, Bradac, and Gibbons]{Mulac2001}
+a~Mulac, J~J Bradac, and P~Gibbons.
+\newblock {Empirical support for the gender-as-culture hypothesis}.
+\newblock \emph{Human Communication Research}, 27\penalty0 (1):\penalty0
+  121--152, 2001.
+\newblock ISSN 03603989.
+\newblock \doi{10.1111/j.1468-2958.2001.tb00778.x}.
+\newblock URL \url{http://dx.doi.org/10.1111/j.1468-2958.2001.tb00778.x}.
+
+\bibitem[Mikros(2013)]{Mikros2013}
+George~K. Mikros.
+\newblock {Authorship Attribution and Gender Identification in Greek Blogs}.
+\newblock \emph{Methods and Applications of Quantitative Linguistics}, pages
+  21--32, 2013.
+
+\bibitem[Sarawgi et~al.(2011)Sarawgi, Gajulapalli, and Choi]{Sarawgi2011}
+Ruchita Sarawgi, Kailash Gajulapalli, and Yejin Choi.
+\newblock {Gender Attribution : Tracing Stylometric Evidence Beyond Topic and
+  Genre}.
+\newblock \emph{Fifteenth Conference on Computational Natural Language
+  Learning}, \penalty0 (June):\penalty0 78--86, 2011.
+
+\bibitem[Clarke()]{utf8_utils}
+Norman Clarke.
+\newblock {utf8\_utils Ruby gem}.
+\newblock URL \url{https://github.com/norman/utf8\_utils}.
+
+\bibitem[rub({\natexlab{b}})]{ruby_cld}
+{Compact Language Detector Ruby Gem}, {\natexlab{b}}.
+\newblock URL \url{https://github.com/jtoy/cld}.
+
+\bibitem[Sites()]{google_cld}
+Dick Sites.
+\newblock {Google chromium Compact Language Detector}.
+\newblock URL \url{https://code.google.com/p/cld2/}.
+
+\bibitem[Koppel(2002)]{Koppel2002}
+M.~Koppel.
+\newblock {Automatically Categorizing Written Texts by Author Gender}.
+\newblock \emph{Literary and Linguistic Computing}, 17\penalty0 (4):\penalty0
+  401--412, 2002.
+\newblock ISSN 0268-1145.
+\newblock \doi{10.1093/llc/17.4.401}.
+\newblock URL \url{http://llc.oxfordjournals.org/content/17/4/401.short}.
 
 \end{thebibliography}

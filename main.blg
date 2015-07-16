@@ -3,52 +3,57 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: unsrtnat.bst
 Database file #1: library.bib
+Warning--empty journal in Cilibrasi2007
+Warning--empty journal in Pedregosa2011
+Warning--empty journal in ClusteringGithub
 Warning--empty year in GenBank
 Warning--empty year in ruby
 Warning--empty year in clojure
 Warning--empty year in ghc
 Warning--empty journal in Roussev2013
-Warning--empty journal in Cilibrasi2007
-Warning--empty journal in Pedregosa2011
-You've used 22 entries,
+Warning--there's a number but no volume in Sarawgi2011
+Warning--empty year in utf8_utils
+Warning--empty year in ruby_cld
+Warning--empty year in google_cld
+You've used 34 entries,
             2481 wiz_defined-function locations,
-            718 strings with 8409 characters,
-and the built_in function-call counts, 8401 in all, are:
-= -- 773
-> -- 358
-< -- 11
-+ -- 148
-- -- 104
-* -- 665
-:= -- 1301
-add.period$ -- 89
-call.type$ -- 22
-change.case$ -- 43
-chr.to.int$ -- 22
-cite$ -- 33
-duplicate$ -- 405
-empty$ -- 785
-format.name$ -- 134
-if$ -- 1791
-int.to.chr$ -- 1
-int.to.str$ -- 23
-missing$ -- 19
-newline$ -- 141
-num.names$ -- 54
-pop$ -- 168
+            796 strings with 10145 characters,
+and the built_in function-call counts, 12416 in all, are:
+= -- 1151
+> -- 476
+< -- 20
++ -- 207
+- -- 138
+* -- 933
+:= -- 1893
+add.period$ -- 132
+call.type$ -- 34
+change.case$ -- 67
+chr.to.int$ -- 33
+cite$ -- 52
+duplicate$ -- 623
+empty$ -- 1198
+format.name$ -- 178
+if$ -- 2675
+int.to.chr$ -- 2
+int.to.str$ -- 35
+missing$ -- 26
+newline$ -- 208
+num.names$ -- 84
+pop$ -- 277
 preamble$ -- 1
-purify$ -- 22
+purify$ -- 34
 quote$ -- 0
-skip$ -- 260
+skip$ -- 413
 stack$ -- 0
-substring$ -- 427
-swap$ -- 50
-text.length$ -- 1
+substring$ -- 597
+swap$ -- 91
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 151
-warning$ -- 7
-while$ -- 67
+type$ -- 235
+warning$ -- 12
+while$ -- 101
 width$ -- 0
-write$ -- 325
-(There were 7 warnings)
+write$ -- 487
+(There were 12 warnings)
