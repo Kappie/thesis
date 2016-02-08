@@ -181,7 +181,7 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Lightweight tools for clustering and classification by file compression} % Your thesis title - this is used in the title and abstract
+\thesistitle{Light-weight tools for clustering and classification by file compression} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------
 \supervisor{Dr. Jan \textsc{van Eijck}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------

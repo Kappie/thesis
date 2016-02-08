@@ -27,10 +27,11 @@ to extract features from objects. No domain knowledge is used. This method of fe
 
 To classify a new piece of data, one determines how well it compresses with \emph{anchors}, preselected pieces of data from each class. The distances with these anchors are the features representing an object. With these features, a support vector machine can be trained. This support vector machine can then classify new objects.
 
-First, I classify file fragments of different file types (for example .jpg or .xml), a common forensics task. This is a good sanity check for this method, because fragments should, in general, compress well with fragments of the same file type, and not well with fragments from different file types.
+First, I classify file fragments of different file types (for example .jpg or .xml), a common forensics task. This is a good sanity check for this method, because fragments should, in general, compress well with fragments of the same file type, and not well with fragments from different file types. I show that the classifier can distinguish very well between uncompressed file types, but does not so well on compressed file types, like .gz and .jpg. This is because a real-world compressor cannot make an already compressed string much smaller.
 
 Then, I show that in gender attribution to written text, this method works almost as well as the state of the art, domain specific approaches, which use stylometric and content-related features.  Again, the code is light-weight: I only use methods from the Python machine learning library scikit-learn \cite{Pedregosa2011}.
 
+The code \cite{ClassificationGithub} is available online.
 
 \section{Classifying file fragments}
 
@@ -156,8 +157,7 @@ At the time of writing, it is possible to download samples of the Govdocs1
 dataset \cite{Garfinkel2009}, called threads, of 1000 files each. I used
 thread 0 through thread 7 as a corpus.
 
-I created two corpora of fragmented files by chopping the files up into 512 or
-4096 byte blocks, throwing away the first and last block of each file. The
+I created two corpora of fragmented files by chopping the files up into 512 byte blocks, throwing away the first and last block of each file. The
      reasoning is that those blocks often contain header information, which is
      atypical for the file at large. It also ensures that all blocks are of
      equal size.
@@ -172,8 +172,6 @@ Table \ref{table:number_of_fragments} shows the number of fragments of each file
  .csv        &                 47782 \\
  .jpg        &                 33630 \\
  .gz         &                 11507 \\
- .gif        &                 44367 \\
- .txt        &                 19539 \\
  .log        &                 25625 \\
  .xml        &                 9540  \\
  .html       &                 19934  \\
@@ -258,7 +256,7 @@ cross validation. All fragments are 512 bytes.}
 
 Now, we train the classifier on two compressed formats. The recall rate is
 very bad and .jpg gets many false positives. Training on .gif and .mp3
-instead of .gz gives similar results. Increasing the training set from 1000 to 10000 sample fragments per type doesn't improve results, either.
+instead of .gz gives similar results. Increasing the training set from 3000 to 10000 sample fragments per type doesn't improve results, either.
 
 This outcome is to be expected, because compressed file formats can hardly be compressed any further by lzma (or another compressor). They are effectively \emph{random} sequences, although they are, of course, not really random. Here, the difference between a real world compressor and the theoretical notion of the Kolmogorov complexity is especially clear: the (theoretical) information distance between two objects does not change if they are compressed, but the real-world equivalent, the normalized compression distance, does, because compressors cannot find the patterns in the already compressed data.
 
@@ -268,7 +266,7 @@ This outcome is to be expected, because compressed file formats can hardly be co
    anchors/type &   .gz precision &   .gz recall &   .jpg precision &   .jpg recall \\
 \hline
               2 &           .6622 &           .7151 &    .7162 &    .4295 \\
-             10 &           1     &           96.84 &    1     &    1     \\
+             10 &           .9040 &           .3306 &    .5901 &    .9643 \\
 \hline
 \end{tabular}
 \caption{
@@ -282,34 +280,57 @@ for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
 cross validation. All fragments are 512 bytes.} \label{table:gz_jpg_recall}
 \end{table}
 
-
-
 \subsubsection{Classifying .csv, .html, .jpg and .log}
 
-Table \ref{table:csv_html_jpg_log_recall} shows that classification still
+Table \ref{table:csv_html_jpg_log_recall} (two anchors per file type) and table \ref{table:csv_html_jpg_log_recall_10_anchors} (ten anchors per file type) show that classification still
 works very well on four different file types of low entropy. Note that
 adding more anchors now significantly improves results.
 
-
 \begin{table}[h]
-\begin{tabular}{rrrrr}
-\hline
-   anchors/type &   .csv recall \% &   .html recall \% &   .jpg recall \% &   .log recall \% \\
-\hline
-              2 &           94.00    &            92.32 &           98.84 &           87.28 \\
-             10 &           98.48 &            95.04 &           99.12 &           95.24 \\
-\hline
-\end{tabular}
+  \begin{tabular}{lrr}
+  \hline
+   file type   &   precision &   recall \\
+  \hline
+   .csv        &      .9684 &   .9520 \\
+   .html       &      .9091 &   .9293 \\
+   .jpg        &      .9960 &   .9889 \\
+   .log        &      .9005 &   .9017 \\
+  \hline
+  \end{tabular}
 \caption{
-The results were acquired by averaging recall rates over five
-independent runs. In each run, 1000 distinct training fragments and 500
-distinct test fragments per file type were selected. The kernel is RBF, $C
-\in \{ 2^{0}, 2^{1}, \dots, 2^{5} \}$ and $\gamma \in \{2^{-7}, 2^{-6},
-\dots, 2^{-1} \}$, optimized for the training set with a two-fold cross
-validation. All fragments are 512 bytes.}
+Precision and recall rates for two anchors per file type. The results were acquired by averaging precision rates over five
+independent runs. In each run, the distinct anchors were drawn randomly from the dataset.
+Then, 3000 distinct fragments (different from the anchors) per file type were selected.
+The predictions were validated with five-fold cross validation.
+The support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
+2^{-7}, \dots, 2^{1} \}$, optimized for each of the five training folds with a three-fold
+cross validation. All fragments are 512 bytes.}
 \label{table:csv_html_jpg_log_recall}
 \end{table}
 
+\begin{table}[h]
+  \begin{tabular}{lrr}
+  \hline
+   file type   &   precision &   recall \\
+  \hline
+   .csv        &      .9932 &   .9907 \\
+   .html       &      .9638 &   .9681 \\
+   .jpg        &      .9965 &   .9915 \\
+   .log        &      .9668 &   .9699 \\
+  \hline
+  \end{tabular}
+\caption{
+Precision and recall rates for ten anchors per file type. The results were acquired by averaging precision rates over five
+independent runs. In each run, the distinct anchors were drawn randomly from the dataset.
+Then, 3000 distinct fragments (different from the anchors) per file type were selected.
+The predictions were validated with five-fold cross validation.
+The support vector machine with an RBF kernel was trained by doing a grid search
+for $C \in \{ 2^{-2}, 2^{2}, \dots, 2^{8} \}$ and $\gamma \in \{2^{-9},
+2^{-7}, \dots, 2^{1} \}$, optimized for each of the five training folds with a three-fold
+cross validation. All fragments are 512 bytes.}
+\label{table:csv_html_jpg_log_recall_10_anchors}
+\end{table}
 
 \section{Classifying written text by author gender}
 
@@ -374,7 +395,7 @@ cross validation. }
 \label{table:female_male_precision}
 \end{table}
 
-\subsection{Conclusion}
+\section{Conclusion}
 
 This chapter shows that the normalized compression distance can be used to extract features from data without using domain-specific knowledge. Those features can then be used to train a classifier (in this paper, a support vector machine) to predict the class of new data items. This method was briefly described in \cite{Cilibrasi2007}, but has, to my knowledge, never been used in experiment. The Python script to run experiments is small, and makes extensive use of the scikit-learn library \cite{Pedregosa2011}.
 

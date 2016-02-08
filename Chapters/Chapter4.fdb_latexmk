@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1437053539 "Chapter4.tex" "Chapter4.pdf" "Chapter4" 1437053541
+["pdflatex"] 1437133110 "Chapter4.tex" "Chapter4.pdf" "Chapter4" 1437133114
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
@@ -8,7 +8,7 @@
   "/usr/local/texlive/2014/texmf-var/web2c/pdftex/pdflatex.fmt" 1401025990 3832012 904d82bdcc8abf2b1cd296990b82553b ""
   "/usr/local/texlive/2014/texmf.cnf" 1401025936 577 a59edbde8d3a8c549d0eeaab1739e2ff ""
   "Chapter4.aux" 1435846460 8 a94a2480d3289e625eea47cd1b285758 ""
-  "Chapter4.tex" 1437053538 21117 b9f7dd17bc4c9224993b7021ce3d844d ""
+  "Chapter4.tex" 1437132950 22797 f5f5ca1a3de16b080d2ed26bc714caf8 ""
   (generated)
   "Chapter4.log"
   "Chapter4.pdf"

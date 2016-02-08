@@ -15,45 +15,45 @@ Warning--there's a number but no volume in Sarawgi2011
 Warning--empty year in utf8_utils
 Warning--empty year in ruby_cld
 Warning--empty year in google_cld
-You've used 34 entries,
+You've used 35 entries,
             2481 wiz_defined-function locations,
-            796 strings with 10145 characters,
-and the built_in function-call counts, 12416 in all, are:
-= -- 1151
-> -- 476
-< -- 20
-+ -- 207
-- -- 138
-* -- 933
-:= -- 1893
-add.period$ -- 132
-call.type$ -- 34
-change.case$ -- 67
+            800 strings with 10258 characters,
+and the built_in function-call counts, 12677 in all, are:
+= -- 1173
+> -- 483
+< -- 21
++ -- 212
+- -- 140
+* -- 948
+:= -- 1932
+add.period$ -- 135
+call.type$ -- 35
+change.case$ -- 69
 chr.to.int$ -- 33
-cite$ -- 52
-duplicate$ -- 623
-empty$ -- 1198
-format.name$ -- 178
-if$ -- 2675
-int.to.chr$ -- 2
-int.to.str$ -- 35
+cite$ -- 53
+duplicate$ -- 637
+empty$ -- 1228
+format.name$ -- 181
+if$ -- 2732
+int.to.chr$ -- 3
+int.to.str$ -- 36
 missing$ -- 26
-newline$ -- 208
-num.names$ -- 84
-pop$ -- 277
+newline$ -- 213
+num.names$ -- 87
+pop$ -- 289
 preamble$ -- 1
-purify$ -- 34
+purify$ -- 35
 quote$ -- 0
-skip$ -- 413
+skip$ -- 422
 stack$ -- 0
-substring$ -- 597
-swap$ -- 91
+substring$ -- 599
+swap$ -- 95
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 235
+type$ -- 242
 warning$ -- 12
-while$ -- 101
+while$ -- 103
 width$ -- 0
-write$ -- 487
+write$ -- 499
 (There were 12 warnings)

@@ -6,4 +6,10 @@
 
 \lhead{\emph{Conclusion}} % This is for the header on each page - perhaps a shortened title
 
-HoiHoi blaf
+This thesis shows that with a very light-weight approach, using only libraries from the Python and R programming languages, one can harnass the power of the normalized compression distance, the real-world version of the normalized information distance based on Kolmogorov complexity.
+
+Two domains of machine learning are studied: clustering and classification.
+
+In the domain of clustering, I developed a light-weight alternative to CompLearn \cite{CompLearn}, an open source clustering tool based on NCD. I show that agglomerative hierarchical clustering with a linkage criterion works well for clustering, and compare it to the quartet-tree clustering method used in CompLearn \cite{Cilibrasi2011}. The quartet-tree method clusters evolutionary data better, but, unlike clustering with a linkage criterion, doesn't preserve a sense of distance between clusters. It also attains less than stellar fitness scores on non-evolutionary data, and is more computationally demanding than clustering with a linkage criterion.
+
+In the domain of classification, I use the normalized compression to extract features from data, and use those features to train a support vector machine. This method is described in \cite{Cilibrasi2007}, but, as far as I know, this paper is the first to report on experiments using this method. This way of feature extraction works very well on the fuzzy problem of gender attribution to written text, scoring a 75\% precision rate on blogs, versus 80.1\% by the best domain-specific approach.

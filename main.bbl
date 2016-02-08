@@ -1,4 +1,4 @@
-\begin{thebibliography}{34}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -72,10 +72,10 @@ Rudi~L. Cilibrasi and P.~M~B Vitnyi.
 \newblock ISSN 00313203.
 \newblock \doi{10.1016/j.patcog.2010.08.033}.
 
-\bibitem[Kapteijns(2015)]{ClusteringGithub}
+\bibitem[Kapteijns(2015{\natexlab{a}})]{ClusteringGithub}
 Geert Kapteijns.
 \newblock {Clustering by NCD}.
-\newblock 2015.
+\newblock 2015{\natexlab{a}}.
 \newblock URL \url{https://github.com/Kappie/clustering}.
 
 \bibitem[Gen()]{GenBank}
@@ -97,6 +97,11 @@ clojure @ github.com.
 \bibitem[ghc()]{ghc}
 {The Glasgow Haskell Compiler}.
 \newblock URL \url{https://www.haskell.org/ghc/}.
+
+\bibitem[Kapteijns(2015{\natexlab{b}})]{ClassificationGithub}
+Geert Kapteijns.
+\newblock {Classification by NCD}, 2015{\natexlab{b}}.
+\newblock URL \url{https://github.com/Kappie/support\_vector\_machine}.
 
 \bibitem[Garfinkel et~al.(2009)Garfinkel, Farrell, Roussev, and
   Dinolt]{Garfinkel2009}
