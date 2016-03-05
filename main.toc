@@ -41,5 +41,5 @@
 \contentsline {subsubsection}{\numberline {4.3.2.1}Cleaning the corpus}{24}{subsubsection.84}
 \contentsline {subsubsection}{\numberline {4.3.2.2}Results}{25}{subsubsection.85}
 \contentsline {section}{\numberline {4.4}Conclusion}{25}{section.87}
-\contentsline {chapter}{\numberline {5}Conclusion}{26}{chapter.88}
-\contentsline {chapter}{Bibliography}{27}{dummy.89}
+\contentsline {chapter}{\numberline {5}Conclusion}{27}{chapter.88}
+\contentsline {chapter}{Bibliography}{28}{dummy.89}

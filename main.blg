@@ -17,7 +17,7 @@ Warning--empty year in ruby_cld
 Warning--empty year in google_cld
 You've used 35 entries,
             2481 wiz_defined-function locations,
-            800 strings with 10258 characters,
+            799 strings with 10204 characters,
 and the built_in function-call counts, 12677 in all, are:
 = -- 1173
 > -- 483

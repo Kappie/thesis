@@ -18,7 +18,7 @@ Intuitively, $111\dots111$, a string of a million ones, is not very complex. It 
 1000000.times { print "1" }
 \end{verbatim}
 
-I do not claim the Kolmogorov complexity of a string of a million ones is 27 bytes. The true Kolmogorov complexity of a string $x$ cannot be computed in the Turing sense. There is no program that, given $x$, outputs the (length of) the shortest program that produces $x$.
+I do not claim the Kolmogorov complexity of a string of a million ones is 27 bytes. The true Kolmogorov complexity of a string $x$ cannot be computed in the Turing sense. There is no program that, given $x$, outputs the (length of) the shortest program that produces $x$ (see proof below.)
 
 The string $011\dots010$, produced by flipping a fair coin a million times, has, with very high probability, a Kolmogorov complexity close to its own length (by counting the number of different bit strings of each length, you can show that the chance to compress a random string by more than $c$ bits is at most $2^{-c}$).
 

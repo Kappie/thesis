@@ -19,7 +19,7 @@ message, compares it to features extracted from, say, a million messages
 labeled as spam and a million labeled as ham, and decides to which class
 it belongs.
 
-Most real-world applications take a domain specific approach. Spam filters
+Most real-world applications take a domain specific approach. For example, spam filters
 count occurences of words and hyperlinks.
 
 In this chapter, the normalized compression distance \eqref{ncd} is used
@@ -399,9 +399,9 @@ cross validation. }
 
 This chapter shows that the normalized compression distance can be used to extract features from data without using domain-specific knowledge. Those features can then be used to train a classifier (in this paper, a support vector machine) to predict the class of new data items. This method was briefly described in \cite{Cilibrasi2007}, but has, to my knowledge, never been used in experiment. The Python script to run experiments is small, and makes extensive use of the scikit-learn library \cite{Pedregosa2011}.
 
-In the field of file fragment classification. Bla
+File fragment classification is used as a proof of concept, and we show that low entropy formats are classified almost perfectly.
 
-In the field of gender attribution, it is less clear what patterns to look for, and the NCD shines. In classifying the gender of the authors of blogs, my algorithm has a 75\% precision rate, which is very high, considering no domain specific features where extracted, and the highest number in literature is 80.1\%, on the same corpus I used.
+In the field of gender attribution, it is not very clear what patterns to look for, and the NCD shines. In classifying the gender of the authors of blogs, my algorithm has a 75\% precision rate, which is very high, considering no domain specific features where extracted, and the highest number in literature is 80.1\%, on the same corpus I used.
 
 As follow-up research, one could try to use a combined method: Using (a subset of) the stylometric and content-related features, along with NCDs with fifty or hundred anchors.
 

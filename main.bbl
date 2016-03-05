@@ -17,7 +17,7 @@ Ying Cao, Axel Janke, Peter~J. Waddell, Michael Westerman, Osamu Takenaka,
 \newblock \doi{10.1007/PL00006389}.
 
 \bibitem[Cilibrasi and Vit\'{a}nyi(2005)]{Cilibrasi2005}
-Rudi Cilibrasi and P.~M~B Vit\'{a}nyi.
+Rudi Cilibrasi and P.~M.~B. Vit\'{a}nyi.
 \newblock {Clustering by compression}.
 \newblock \emph{IEEE Transactions on Information Theory}, 51\penalty0
   (4):\penalty0 1523--1545, 2005.
@@ -25,7 +25,7 @@ Rudi Cilibrasi and P.~M~B Vit\'{a}nyi.
 \newblock \doi{10.1109/TIT.2005.844059}.
 
 \bibitem[Cilibrasi(2007)]{Cilibrasi2007}
-Rl~Cilibrasi.
+Rudi Cilibrasi.
 \newblock {Statistical inference through data compression}.
 \newblock 2007.
 \newblock URL
@@ -44,7 +44,7 @@ Ming Li and Paul M~B Vit\'{a}nyi.
 
 \bibitem[Bennett et~al.(1998)Bennett, G\^{a}cs, Li, Vit\^{a}nyi, and
   Zurek]{Bennett1998}
-Charles~H. Bennett, P\'{e}ter G\^{a}cs, Ming Li, Paul M~B Vit\^{a}nyi, and
+Charles~H. Bennett, P\'{e}ter G\^{a}cs, Ming Li, Paul M.~B. Vit\^{a}nyi, and
   Wojciech~H. Zurek.
 \newblock {Information distance}.
 \newblock \emph{IEEE Transactions on Information Theory}, 44\penalty0
@@ -65,8 +65,8 @@ Rudi Cilibrasi.
 \newblock {CompLearn}, 2015.
 \newblock URL \url{www.complearn.org}.
 
-\bibitem[Cilibrasi and Vitnyi(2011)]{Cilibrasi2011}
-Rudi~L. Cilibrasi and P.~M~B Vitnyi.
+\bibitem[Cilibrasi and Vit\'{a}nyi(2011)]{Cilibrasi2011}
+Rudi~L. Cilibrasi and P.~M.~B. Vit\'{a}nyi.
 \newblock {A Fast Quartet tree heuristic for hierarchical clustering}.
 \newblock \emph{Pattern Recognition}, 44\penalty0 (3):\penalty0 662--677, 2011.
 \newblock ISSN 00313203.
@@ -79,7 +79,7 @@ Geert Kapteijns.
 \newblock URL \url{https://github.com/Kappie/clustering}.
 
 \bibitem[Gen()]{GenBank}
-0aa01af9101ad7f92eedf17301e3269ae811fb50 @ www.ncbi.nlm.nih.gov.
+{GenBank}.
 \newblock URL \url{http://www.ncbi.nlm.nih.gov/genbank/}.
 
 \bibitem[XzM(2014)]{XzManpage}
@@ -114,7 +114,7 @@ Simson Garfinkel, Paul Farrell, Vassil Roussev, and George Dinolt.
 \newblock \doi{10.1016/j.diin.2009.06.016}.
 
 \bibitem[Li et~al.(2010)Li, Ong, Suganthan, and Thing]{Li2010}
-Q~Li, a~Ong, P~Suganthan, and V~Thing.
+Q.~Li, A.~Ong, P.~Suganthan, and V.~Thing.
 \newblock {A Novel Support Vector Machine Approach to High Entropy Data
   Fragment Classification}.
 \newblock \emph{Proceedings of the South African Information Security
@@ -139,7 +139,7 @@ Stefan Axelsson.
 
 \bibitem[Roussev and Quates(2013)]{Roussev2013}
 Vassil Roussev and Candice Quates.
-\newblock {File fragment encoding classi fi cation d An empirical approach}.
+\newblock {File fragment encoding classification An empirical approach}.
 \newblock 10:\penalty0 69--77, 2013.
 
 \bibitem[Cortes and Vapnik(1995)]{Cortes1995}
@@ -150,7 +150,7 @@ Corinna Cortes and Vladimir Vapnik.
 \newblock \doi{10.1007/BF00994018}.
 
 \bibitem[Burges(1998)]{Burges1998}
-Christopher J~C Burges.
+Christopher J.~C. Burges.
 \newblock {A Tutorial on Support Vector Machines for Pattern Recognition}.
 \newblock \emph{Data Mining and Knowledge Discovery}, 2:\penalty0 121--167,
   1998.
